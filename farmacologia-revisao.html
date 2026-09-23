@@ -1,0 +1,959 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Farmacologia Clínica — Revisão Interativa</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,500;0,600;0,700;1,500&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#eef1f8; --surface:#ffffff; --surface-2:#f5f7fc; --border:#d7deed;
+  --text:#172136; --text-dim:#51628a; --text-faint:#8695b8;
+  --cyan:#0f8fae; --magenta:#b83fc4; --amber:#b7791f; --green:#1f9d68; --red:#d1435a;
+  --serif:'Lora', Georgia, 'Times New Roman', serif;
+  --sans:'Manrope', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  --radius:16px; --radius-sm:10px;
+  color-scheme: light dark;
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --bg:#0b1220; --surface:#141f38; --surface-2:#1b2947; --border:#29365b;
+    --text:#e7ecf7; --text-dim:#93a3c7; --text-faint:#62719a;
+    --cyan:#4fd1e8; --magenta:#e78ff0; --amber:#f5b855; --green:#52d698; --red:#f2697d;
+  }
+}
+:root[data-theme="dark"]{
+  --bg:#0b1220; --surface:#141f38; --surface-2:#1b2947; --border:#29365b;
+  --text:#e7ecf7; --text-dim:#93a3c7; --text-faint:#62719a;
+  --cyan:#4fd1e8; --magenta:#e78ff0; --amber:#f5b855; --green:#52d698; --red:#f2697d;
+}
+*{box-sizing:border-box;}
+html,body{height:100%;}
+body{
+  margin:0; background:var(--bg); color:var(--text); font-family:var(--sans);
+  padding-top:env(safe-area-inset-top,0px); padding-bottom:env(safe-area-inset-bottom,0px);
+  -webkit-font-smoothing:antialiased;
+}
+html{scroll-padding-top:env(safe-area-inset-top,0px);}
+@media (prefers-reduced-motion: reduce){
+  *{animation-duration:0.001ms !important; transition-duration:0.001ms !important;}
+}
+:focus-visible{outline:2px solid var(--cyan); outline-offset:2px; border-radius:4px;}
+a{color:var(--cyan);}
+
+.page{max-width:800px; margin:0 auto; padding:0 20px 70px;}
+
+.topbar{
+  max-width:800px; margin:0 auto;
+  display:flex; align-items:center; justify-content:space-between; gap:16px;
+  padding:20px 20px 16px; border-bottom:1px solid var(--border);
+  position:sticky; top:0; background:var(--bg); z-index:20;
+  padding-top:calc(20px + env(safe-area-inset-top,0px));
+}
+.brand{display:flex; align-items:center; gap:12px; min-width:0;}
+.brand-mark{
+  font-family:var(--serif); font-size:22px; font-weight:600; color:var(--cyan);
+  width:38px; height:38px; border:1.5px solid var(--cyan); border-radius:9px;
+  display:flex; align-items:center; justify-content:center; flex:none;
+}
+.brand-text h1{
+  font-family:var(--serif); font-size:17px; margin:0; font-weight:600; letter-spacing:-0.01em;
+  white-space:nowrap; overflow:hidden; text-overflow:ellipsis;
+}
+.brand-text p{margin:1px 0 0; font-size:11.5px; color:var(--text-dim);}
+.topbar-actions{display:flex; align-items:center; gap:8px; flex:none;}
+.icon-btn, .ghost-btn{
+  font-family:var(--sans); font-size:13px; font-weight:600; cursor:pointer;
+  background:var(--surface); border:1px solid var(--border); color:var(--text);
+  border-radius:10px; padding:8px 13px; transition:border-color .15s, transform .1s;
+}
+.icon-btn{padding:8px 10px; font-size:15px; line-height:1;}
+.ghost-btn:hover, .icon-btn:hover{border-color:var(--cyan);}
+.ghost-btn.danger{border-color:var(--red); color:var(--red);}
+.ghost-btn.danger:hover{border-color:var(--red); filter:brightness(1.1);}
+.ghost-btn:active, .icon-btn:active{transform:scale(0.97);}
+
+.content{min-height:60vh; margin-top:8px;}
+
+/* ---- Menu screen ---- */
+.menu-hero{padding:34px 0 6px;}
+.menu-hero .eyebrow{font-size:13px; color:var(--cyan); font-weight:700; margin:0 0 10px;}
+.menu-hero h2{font-family:var(--serif); font-size:clamp(27px,5vw,38px); line-height:1.16; margin:0 0 14px; max-width:600px;}
+.menu-hero p{color:var(--text-dim); font-size:15px; line-height:1.65; max-width:560px; margin:0 0 4px;}
+
+.cta-row{margin-top:26px; display:flex; align-items:center; gap:16px; flex-wrap:wrap;}
+.cta-primary{
+  font-family:var(--sans); font-weight:800; font-size:16px; color:#fff;
+  background:var(--cyan); border:none; border-radius:14px; padding:17px 26px; cursor:pointer;
+  box-shadow:0 10px 24px -12px color-mix(in srgb, var(--cyan) 70%, transparent);
+  transition:transform .12s, filter .15s;
+}
+.cta-primary:hover{filter:brightness(1.07);}
+.cta-primary:active{transform:scale(0.98);}
+.cta-meta{font-size:13px; color:var(--text-faint);}
+
+.resume-note{
+  margin-top:18px; padding:13px 16px; border-radius:12px; border:1px solid var(--border);
+  background:var(--surface); font-size:13.5px; color:var(--text-dim); display:flex; align-items:center; justify-content:space-between; gap:12px; flex-wrap:wrap; max-width:560px;
+}
+.resume-note button{flex:none;}
+
+.fidelity{
+  margin-top:26px; padding:15px 17px; background:var(--surface); border:1px solid var(--border);
+  border-radius:12px; font-size:13.5px; color:var(--text-dim); line-height:1.6; max-width:600px;
+}
+.fidelity strong{color:var(--text);}
+
+.practice-section{margin-top:38px; padding-top:26px; border-top:1px solid var(--border);}
+.practice-section h3{font-family:var(--serif); font-size:17px; margin:0 0 4px; font-weight:600;}
+.practice-section > p{font-size:13.5px; color:var(--text-dim); margin:0 0 16px;}
+
+.start-grid{display:grid; grid-template-columns:repeat(auto-fit, minmax(220px,1fr)); gap:12px;}
+.start-card{
+  background:var(--surface); border:1px solid var(--border); border-radius:var(--radius-sm);
+  padding:16px 17px; cursor:pointer; text-align:left; font-family:var(--sans);
+  border-top:3px solid var(--card-color, var(--cyan));
+  transition:transform .12s, border-color .15s;
+}
+.start-card:hover{transform:translateY(-2px); border-color:var(--card-color, var(--cyan));}
+.start-card h4{font-family:var(--serif); font-size:16.5px; margin:0 0 4px; font-weight:600;}
+.start-card p{font-size:12.5px; color:var(--text-dim); margin:0 0 10px; line-height:1.5; min-height:32px;}
+.start-card .count{font-size:12.5px; font-weight:700; color:var(--card-color, var(--cyan));}
+.start-card .prog{font-size:11.5px; color:var(--text-faint); margin-top:3px;}
+
+.options-row{display:flex; align-items:center; gap:16px; margin-top:18px; flex-wrap:wrap;}
+.toggle-field{display:flex; align-items:center; gap:8px; font-size:13px; color:var(--text-dim);}
+.toggle-field input{width:16px; height:16px; accent-color:var(--cyan);}
+
+.back-link{background:none; border:none; color:var(--text-dim); font-size:13px; font-weight:600; cursor:pointer; padding:0; margin-bottom:18px; display:inline-flex; align-items:center; gap:6px;}
+.back-link:hover{color:var(--cyan);}
+
+/* ---- Quiz / exam screens ---- */
+.quiz-head{display:flex; align-items:center; justify-content:space-between; gap:14px; flex-wrap:wrap; margin-bottom:14px;}
+.quiz-crumb{font-size:13px; color:var(--text-dim); font-weight:600;}
+.quiz-crumb .cat-tag{color:var(--cat-color, var(--cyan));}
+.quiz-score{font-size:12.5px; font-weight:700; color:var(--text); background:var(--surface); border:1px solid var(--border); border-radius:999px; padding:6px 12px;}
+.progress-track{height:6px; background:var(--border); border-radius:4px; overflow:hidden; margin-bottom:18px;}
+.progress-fill{height:100%; background:var(--cat-color, var(--cyan)); border-radius:4px; transition:width .3s ease;}
+
+.jump-grid{display:flex; flex-wrap:wrap; gap:6px; margin-bottom:22px;}
+.jump-dot{
+  width:29px; height:29px; border-radius:8px; border:1.5px solid var(--border);
+  background:var(--surface-2); font-size:11px; font-weight:700; color:var(--text-dim);
+  cursor:pointer; display:flex; align-items:center; justify-content:center; font-family:var(--sans);
+  transition:border-color .1s;
+}
+.jump-dot.answered{background:var(--dot-color, var(--cyan)); border-color:var(--dot-color, var(--cyan)); color:#fff;}
+.jump-dot.current{outline:2px solid var(--text); outline-offset:2px;}
+
+.q-card{
+  background:var(--surface); border:1px solid var(--border); border-radius:var(--radius);
+  padding:28px 28px 24px;
+}
+@media (max-width:600px){ .q-card{padding:20px 16px 18px;} }
+.q-num{font-size:12px; font-weight:700; color:var(--cat-color, var(--cyan)); letter-spacing:0.02em; margin-bottom:9px;}
+.q-stem{font-family:var(--serif); font-size:17.5px; line-height:1.6; color:var(--text); margin:0 0 22px; max-width:72ch;}
+
+.opt-list{display:flex; flex-direction:column; gap:10px;}
+.opt{
+  display:flex; align-items:flex-start; gap:12px; text-align:left; width:100%;
+  background:var(--surface-2); border:1.5px solid var(--border); border-radius:12px;
+  padding:13px 15px; cursor:pointer; font-family:var(--sans); font-size:14.5px; line-height:1.55; color:var(--text);
+  transition:border-color .12s, background .12s;
+}
+.opt:hover:not(.locked){border-color:var(--cat-color, var(--cyan));}
+.opt .opt-letter{
+  flex:none; width:25px; height:25px; border-radius:50%; border:1.5px solid var(--border);
+  display:flex; align-items:center; justify-content:center; font-size:12px; font-weight:700; color:var(--text-dim);
+  margin-top:1px;
+}
+.opt.selected{background:color-mix(in srgb, var(--cat-color, var(--cyan)) 13%, var(--surface-2)); border-color:var(--cat-color, var(--cyan));}
+.opt.selected .opt-letter{background:var(--cat-color, var(--cyan)); border-color:var(--cat-color, var(--cyan)); color:#fff;}
+.opt.correct{background:color-mix(in srgb, var(--green) 14%, var(--surface-2)); border-color:var(--green);}
+.opt.correct .opt-letter{background:var(--green); border-color:var(--green); color:#fff;}
+.opt.incorrect{background:color-mix(in srgb, var(--red) 12%, var(--surface-2)); border-color:var(--red);}
+.opt.incorrect .opt-letter{background:var(--red); border-color:var(--red); color:#fff;}
+.opt.dimmed{opacity:0.55;}
+.opt.locked{cursor:default;}
+
+.explain{
+  margin-top:20px; padding:17px 19px; border-radius:12px; border:1px solid var(--border);
+  background:var(--surface-2); animation:reveal .22s ease;
+}
+@keyframes reveal{ from{opacity:0; transform:translateY(-4px);} to{opacity:1; transform:translateY(0);} }
+.explain .verdict{font-weight:800; font-size:13px; margin-bottom:7px; letter-spacing:0.01em;}
+.explain .verdict.ok{color:var(--green);}
+.explain .verdict.no{color:var(--red);}
+.explain p{margin:0; font-size:13.5px; line-height:1.63; color:var(--text-dim);}
+
+.exam-nav{display:flex; justify-content:space-between; align-items:center; margin-top:22px; gap:10px;}
+.primary-btn{
+  font-family:var(--sans); font-weight:700; font-size:14.5px; color:#fff;
+  background:var(--cat-color, var(--cyan)); border:none; border-radius:10px; padding:12px 22px; cursor:pointer;
+  transition:transform .1s, filter .15s;
+}
+.primary-btn:hover{filter:brightness(1.08);}
+.primary-btn:active{transform:scale(0.97);}
+.primary-btn:disabled{opacity:0.4; cursor:default;}
+.nav-btn:disabled{opacity:0.35; cursor:default;}
+
+.q-actions{display:flex; justify-content:flex-end; margin-top:20px;}
+
+/* ---- Result screen ---- */
+.summary-card{background:var(--surface); border:1px solid var(--border); border-radius:var(--radius); padding:36px 28px; text-align:center; margin-top:10px;}
+.summary-score{font-family:var(--serif); font-size:58px; font-weight:700; margin:8px 0 2px; color:var(--text);}
+.summary-score span{font-size:24px; color:var(--text-faint); font-weight:500;}
+.summary-label{font-size:14px; color:var(--text-dim);}
+.summary-actions{display:flex; gap:10px; justify-content:center; margin-top:26px; flex-wrap:wrap;}
+.summary-breakdown{display:grid; grid-template-columns:repeat(auto-fit,minmax(150px,1fr)); gap:10px; margin-top:28px; text-align:left;}
+.breakdown-item{background:var(--surface-2); border:1px solid var(--border); border-radius:10px; padding:13px 15px;}
+.breakdown-item .b-label{font-size:12px; color:var(--text-dim); font-weight:600;}
+.breakdown-item .b-score{font-size:19px; font-weight:800; margin-top:3px;}
+.breakdown-item .b-bar{height:4px; border-radius:3px; background:var(--border); margin-top:9px; overflow:hidden;}
+.breakdown-item .b-bar-fill{height:100%; border-radius:3px;}
+
+/* ---- Gabarito / review screen ---- */
+.review-item{background:var(--surface); border:1px solid var(--border); border-radius:12px; padding:17px 19px; margin-bottom:12px; border-left:3px solid var(--cat-color, var(--border));}
+.review-item .r-tag{font-size:11.5px; font-weight:700; color:var(--text-faint); text-transform:uppercase; letter-spacing:0.04em;}
+.review-item .r-stem{font-family:var(--serif); font-size:15px; margin:6px 0 10px; line-height:1.5;}
+.review-item .r-your{font-size:12.5px; margin:4px 0;}
+.review-item .r-your.ok{color:var(--green);}
+.review-item .r-your.no{color:var(--red);}
+.review-item .r-your.blank{color:var(--amber);}
+.review-item .r-exp{font-size:13px; color:var(--text-dim); margin-top:8px; line-height:1.6;}
+
+.empty-note{color:var(--text-faint); font-size:14px; text-align:center; padding:40px 20px;}
+
+footer.site-foot{margin-top:50px; padding-top:20px; border-top:1px solid var(--border); font-size:12px; color:var(--text-faint); text-align:center; max-width:800px; margin-left:auto; margin-right:auto; padding-left:20px; padding-right:20px;}
+</style>
+</head>
+<body>
+  <header class="topbar">
+    <div class="brand">
+      <div class="brand-text">
+        <h1>Farmacologia Clínica</h1>
+      </div>
+    </div>
+    <div class="topbar-actions">
+      <button class="icon-btn" id="themeToggle" aria-label="Alternar tema claro/escuro" title="Alternar tema">◐</button>
+      <button class="ghost-btn" id="resetBtn">Zerar tudo</button>
+    </div>
+  </header>
+
+  <main class="page">
+    <div class="content" id="content"></div>
+    <footer class="site-foot">Banco de questões elaborado exclusivamente a partir do material de aula fornecido (Aula 1 — Farmacologia do Receptor à Clínica · Aula 2 — Psicofarmacologia e Psiquiatria Geral · Aula 3 — Farmacologia Cardiovascular · Aula 4 — Agentes Terapêuticos em Endocrinopatias · Aula de Revisão). Nenhuma informação externa a essas fontes foi utilizada.</footer>
+  </main>
+
+<script>
+(function(){
+
+const CATEGORIES = [
+  {id:'farmaco', label:'Farmacocinética & Farmacodinâmica', short:'Farmaco Geral', color:'var(--cyan)'},
+  {id:'cardio',  label:'Farmacologia Cardiovascular',        short:'Cardiovascular', color:'var(--red)'},
+  {id:'psico',   label:'Psicofarmacologia',                  short:'Psicofarmacologia', color:'var(--magenta)'},
+  {id:'endo',    label:'Endocrinologia',                     short:'Endocrinologia', color:'var(--amber)'}
+];
+
+const QUESTIONS = [
+
+// ================= FARMACOCINÉTICA / FARMACODINÂMICA =================
+{id:1, cat:'farmaco', stem:`Dois fármacos que atuam bloqueando a via da angiotensina são comparados em estudo pré-clínico: o Composto A atinge 50% do bloqueio da Angiotensina II a uma concentração de 2 nM, enquanto o Composto B necessita de 20 nM para o mesmo efeito. Ambos, em concentrações suficientemente altas, conseguem bloquear 100% da Angiotensina II. Sobre esse achado, é correto afirmar que:`,
+options:[
+`O Composto A é mais eficaz que o Composto B, pois produz o mesmo efeito com menor concentração.`,
+`O Composto A é mais potente que o Composto B, mas ambos apresentam a mesma eficácia máxima (Emáx), já que atingem o bloqueio completo da Angiotensina II.`,
+`A diferença de CE50 entre os compostos indica que eles atuam por mecanismos farmacodinâmicos distintos.`,
+`O Composto B é necessariamente menos eficaz na prática clínica, pois sua CE50 é dez vezes maior.`
+], correct:1,
+explanation:`Potência é medida pela CE50 — a concentração necessária para produzir um efeito de dada magnitude — e quanto menor a CE50, maior a potência; por isso o Composto A é mais potente. Eficácia (Emáx) é a capacidade máxima de produzir resposta, um conceito distinto: como ambos atingem 100% de bloqueio da Angiotensina II, têm a mesma eficácia, apesar da diferença de potência. A alternativa A confunde potência com eficácia. A C está incorreta porque diferença de CE50 não implica mecanismos diferentes. A D está incorreta porque uma CE50 maior indica apenas menor potência, não necessariamente menor eficácia clínica.`},
+
+{id:2, cat:'farmaco', stem:`Em um experimento farmacológico, o Composto X liga-se ao mesmo sítio de ligação (ortostérico) do agonista endógeno Y em determinado receptor. Na presença de X, a curva dose-resposta de Y desloca-se para a direita (aumento da CE50), mas doses suficientemente altas de Y ainda conseguem atingir o mesmo efeito máximo obtido na ausência de X. O Composto X deve ser classificado como:`,
+options:[`Agonista parcial`,`Antagonista competitivo`,`Antagonista não competitivo`,`Modulador alostérico negativo`], correct:1,
+explanation:`Antagonistas competitivos disputam o mesmo sítio ortostérico do agonista; o efeito é um deslocamento da curva dose-resposta para a direita (redução da potência aparente), mas o Emáx é preservado e a competição pode ser revertida por doses suficientemente altas do agonista — exatamente o que ocorre no experimento. Agonista parcial teria eficácia própria menor que 100%, não é o caso aqui. Antagonista não competitivo reduziria o Emáx de forma irreversível, independentemente da dose de agonista, o que não ocorre. Modulador alostérico atua em sítio diferente do ortostérico, o que contraria o enunciado.`},
+
+{id:3, cat:'farmaco', stem:`Um novo composto experimental reduz em 40% a corrente de cálcio dependente de receptores NMDA em neurônios corticais, independentemente da concentração de glutamato administrada. Estudos de ligação mostram que esse composto se liga a um sítio distinto do sítio de ligação do glutamato. A classificação farmacodinâmica mais adequada para esse composto é:`,
+options:[`Agonista parcial dos receptores NMDA`,`Antagonista competitivo do glutamato`,`Modulador alostérico negativo (comportando-se como antagonismo não competitivo)`,`Modulador alostérico positivo`], correct:2,
+explanation:`Moduladores alostéricos ligam-se a um sítio diferente do sítio ortostérico do agonista endógeno. O modulador alostérico negativo (NAM) reduz a afinidade ou a eficácia do agonista, reduzindo o Emáx sem competir pelo sítio ortostérico — comportando-se, na prática, como um antagonismo não competitivo, já que o efeito reduzido persiste independentemente da concentração do agonista. A alternativa A está incorreta pois o composto não ativa o receptor. A B está incorreta pois o composto não compete pelo mesmo sítio do glutamato. A D descreveria o efeito oposto (aumento de afinidade/eficácia e deslocamento da curva para a esquerda).`},
+
+{id:4, cat:'farmaco', stem:`Um paciente asmático em uso crônico de salbutamol para resgate relata que o medicamento vem perdendo o efeito, precisando de doses cada vez maiores para obter o mesmo alívio. Estudos mostram que a curva dose-resposta do salbutamol nesse paciente está deslocada cerca de 5 vezes para a direita (aumento da CE50), mas o efeito máximo (Emáx) ainda é atingido com doses altas. Esse achado é mais bem explicado por:`,
+options:[`Antagonismo não competitivo irreversível dos receptores β2`,`Tolerância por dessensibilização e down-regulation dos receptores β2, com aumento da CE50 e preservação do Emáx`,`Potencialização por modulação alostérica positiva dos receptores β2`,`Aumento do metabolismo de primeira passagem hepático do salbutamol`], correct:1,
+explanation:`O uso crônico de agonistas β2 como o salbutamol pode causar dessensibilização (perda rápida de função do receptor, por fosforilação e redução de proteínas G) somada a down-regulation (redução do número de receptores por menor síntese e endocitose), resultando em tolerância. O resultado farmacodinâmico clássico é o deslocamento da curva para a direita (aumento da CE50, menor potência aparente), com Emáx preservado se doses suficientemente altas forem usadas — exatamente o padrão descrito. A alternativa A está incorreta porque antagonismo não competitivo reduziria o Emáx, o que não ocorre. A C está incorreta porque modulação alostérica positiva deslocaria a curva para a esquerda. A D não é o mecanismo farmacodinâmico envolvido na tolerância a broncodilatadores.`},
+
+{id:5, cat:'farmaco', stem:`Um fármaco liga-se a um receptor intracelular (citossólico ou nuclear) e, após a ligação, o complexo interage diretamente com o DNA, alterando a transcrição gênica. Clinicamente, o efeito terapêutico só se torna perceptível após horas a dias de uso. A qual família de receptores esse fármaco pertence, e quais exemplos são compatíveis com esse mecanismo?`,
+options:[`Canais iônicos controlados por ligante — como receptores nicotínicos e GABA-A`,`Receptores acoplados à proteína G — como receptores adrenérgicos e muscarínicos`,`Receptores ligados a quinases — como o receptor da insulina`,`Receptores nucleares — como os de glicocorticoides e hormônios tireoidianos`], correct:3,
+explanation:`Receptores nucleares são intracelulares e, ao serem ativados, alteram a transcrição gênica por interação com o DNA; o efeito clínico correspondente se desenvolve ao longo de horas a dias, e os exemplos citados no material são justamente os glicocorticoides e os hormônios tireoidianos. Os canais iônicos agem em milissegundos (fluxo iônico direto). Os receptores acoplados à proteína G ativam segundos mensageiros em segundos. Os receptores ligados a quinases (ex.: receptor da insulina) atuam por dimerização e autofosforilação, com efeito em minutos a horas — mais rápido que a resposta transcricional nuclear descrita.`},
+
+{id:6, cat:'farmaco', stem:`Um paciente em uso crônico de determinado fármaco metabolizado pela CYP3A4 inicia, no mesmo dia, um segundo fármaco que compete diretamente pelo sítio ativo dessa enzima (um inibidor enzimático). Considerando a farmacocinética da inibição enzimática, é correto afirmar que:`,
+options:[`O efeito da interação demora dias a semanas para se manifestar, pois depende da síntese de novas moléculas enzimáticas.`,`O efeito da interação surge rapidamente, já nas primeiras doses, pois ocorre por competição direta pelo sítio ativo da enzima, aumentando a concentração plasmática do primeiro fármaco e o risco de toxicidade.`,`A inibição enzimática reduz a concentração plasmática do fármaco afetado, com risco de falha terapêutica.`,`A interação não depende da via metabólica compartilhada entre os dois fármacos.`], correct:1,
+explanation:`A inibição enzimática ocorre por competição direta pelo sítio ativo da enzima, sendo um processo rápido que já se manifesta nas primeiras doses; como a depuração do fármaco-alvo cai, sua concentração plasmática sobe, gerando risco de toxicidade imediata. Isso contrasta com a indução enzimática, que é lenta (dias a semanas), pois depende da síntese de novas enzimas, reduzindo a concentração do fármaco-alvo e gerando risco de falha terapêutica — o oposto do que ocorre na inibição. A alternativa D ignora que a interação depende exatamente do compartilhamento da via metabólica (CYP3A4).`},
+
+{id:7, cat:'farmaco', stem:`Paciente em uso crônico de Varfarina (fármaco com 99% de ligação à albumina plasmática) inicia tratamento com um antibiótico que também apresenta alta ligação proteica (85–95%). Poucos dias depois, o paciente apresenta gengivorragia espontânea e RNI elevado, sem alteração da dose de Varfarina. O mecanismo mais provável para esse achado é:`,
+options:[`O antibiótico induz o metabolismo hepático da Varfarina, aumentando sua depuração.`,`O antibiótico desloca a Varfarina de sua ligação à albumina, aumentando a fração livre (farmacologicamente ativa) do anticoagulante e potencializando seu efeito.`,`O antibiótico reduz o volume de distribuição da Varfarina.`,`A interação ocorre por competição pelos transportadores renais de secreção tubular, sem relação com ligação proteica.`], correct:1,
+explanation:`Fármacos altamente ligados a proteínas plasmáticas existem principalmente na forma inativa; apenas a fração livre é farmacologicamente ativa. Quando dois fármacos de alta ligação proteica competem pelo mesmo sítio de ligação, um pode deslocar o outro, aumentando sua fração livre, o que potencializa o efeito e aumenta o risco de toxicidade — especialmente relevante para fármacos de baixo índice terapêutico como a Varfarina. A indução enzimática (A) reduziria, e não aumentaria, o efeito da Varfarina. As alternativas C e D não correspondem ao mecanismo de deslocamento competitivo descrito no material.`},
+
+{id:8, cat:'farmaco', stem:`Paciente com síndrome nefrótica evolui com anasarca (ascite, derrame pleural e edema generalizado) e necessita de um antibiótico hidrofílico da classe dos aminoglicosídeos, calculado pelo peso corporal total. Após alguns dias, o pico sérico do fármaco está abaixo do esperado, mesmo com boa função renal. A explicação farmacocinética mais adequada é:`,
+options:[`O volume de distribuição (Vd) de fármacos hidrofílicos aumenta na anasarca, diluindo o fármaco no compartimento extracelular expandido; a dose deve ser ajustada pelo peso seco ou por monitorização de níveis séricos.`,`A anasarca reduz o clearance renal do fármaco, exigindo redução imediata da dose.`,`A anasarca aumenta a ligação proteica do fármaco, reduzindo sua fração livre disponível.`,`Fármacos hidrofílicos não sofrem qualquer alteração de distribuição em estados de expansão do líquido extracelular.`], correct:0,
+explanation:`Fármacos hidrofílicos, como os aminoglicosídeos, distribuem-se principalmente no compartimento extracelular. Na anasarca, esse compartimento está significativamente expandido, aumentando o volume de distribuição (Vd) e diluindo o fármaco — o resultado é uma concentração plasmática reduzida, que pode comprometer a eficácia mesmo com a dose calculada corretamente pelo peso total. A solução é ajustar a dose pelo peso seco ou monitorizar níveis séricos. A alternativa B inverte o problema (não se trata de clearance reduzido); a C não é o mecanismo descrito; a D contraria diretamente o conceito central do caso.`},
+
+{id:9, cat:'farmaco', stem:`Um fármaco tem meia-vida de eliminação de 8 horas e é administrado em infusão contínua. Aproximadamente quanto tempo é necessário para que esse fármaco atinja o estado estacionário (steady state), e qual a porcentagem de acumulação esperada após 2 meias-vidas de uso?`,
+options:[`16 horas; 100% de acumulação`,`24 horas; 50% de acumulação`,`40 horas; 75% de acumulação`,`8 horas; 93,7% de acumulação`], correct:2,
+explanation:`O estado estacionário — quando a taxa de administração se iguala à taxa de eliminação — é atingido, como regra geral, após 4 a 5 meias-vidas; com meia-vida de 8 horas, isso corresponde a cerca de 40 horas (5×8h). A progressão de acumulação segue: 1 meia-vida = 50%, 2 meias-vidas = 75%, 3 meias-vidas = 87,5%, 4 meias-vidas = 93,7%, 5 meias-vidas ≈ 100% (equilíbrio). Portanto, após 2 meias-vidas (16h), a acumulação esperada é de 75%, e não 100%, 50% ou o valor de 4 meias-vidas citado na alternativa D.`},
+
+{id:10, cat:'farmaco', stem:`Paciente em uso de Verapamil (um conhecido inibidor da glicoproteína-P) utiliza Loperamida em dose elevada para controle de diarreia intensa e evolui com sonolência importante e depressão respiratória, efeitos incomuns para esse antidiarreico em doses habituais. A explicação farmacocinética mais provável é:`,
+options:[`O Verapamil induz o metabolismo hepático da Loperamida, gerando metabólitos neurotóxicos.`,`A inibição da glicoproteína-P (P-gp) pelo Verapamil aumenta a absorção intestinal e permite que a Loperamida, normalmente impedida de penetrar no sistema nervoso central, cruze a barreira hematoencefálica.`,`O Verapamil desloca a Loperamida de sua ligação à albumina plasmática.`,`A interação ocorre por inibição da CYP2D6, sem relação com transportadores de efluxo.`], correct:1,
+explanation:`A glicoproteína-P (P-gp) é um transportador de efluxo que bombeia ativamente fármacos para fora das células, funcionando como mecanismo de defesa que limita a absorção intestinal e impede a penetração de diversos fármacos no sistema nervoso central. A Loperamida normalmente não cruza a barreira hematoencefálica graças à P-gp; a inibição desse transportador por fármacos como Verapamil ou Amiodarona aumenta a absorção intestinal e permite a penetração no SNC, podendo causar depressão respiratória grave — exatamente o risco descrito no material. As demais alternativas não correspondem ao mecanismo de transportadores de efluxo.`},
+
+{id:11, cat:'farmaco', stem:`Um paciente idoso em uso de um fármaco de eliminação predominantemente renal e de índice terapêutico estreito apresenta queda progressiva da taxa de filtração glomerular. O médico assistente precisa ajustar a farmacoterapia para evitar acúmulo tóxico. Segundo os princípios de ajuste de dose na insuficiência renal, quais estratégias são válidas?`,
+options:[`Apenas reduzir a dose de manutenção, mantendo o intervalo entre doses; aumentar o intervalo é sempre contraindicado.`,`Reduzir a dose de manutenção (mantendo o intervalo, o que evita picos tóxicos) ou aumentar o intervalo entre doses (mantendo a dose, o que permite eliminação adequada) — ambas são estratégias válidas de ajuste.`,`É obrigatório substituir o fármaco por outro de eliminação exclusivamente hepática, independentemente do contexto clínico.`,`Nenhum ajuste é necessário se a meia-vida do fármaco for curta, mesmo com queda acentuada da TFG.`], correct:1,
+explanation:`A queda da taxa de filtração glomerular reduz o clearance de fármacos de eliminação renal, aumentando drasticamente a meia-vida e o risco de acúmulo e toxicidade. As duas estratégias de ajuste de dose descritas no material são: reduzir a dose de manutenção mantendo o intervalo (evitando picos tóxicos) ou aumentar o intervalo entre doses mantendo a dose (permitindo tempo suficiente para eliminação) — ambas legítimas conforme o contexto clínico. A alternativa A exclui indevidamente uma das estratégias válidas; a C generaliza uma conduta não descrita no material; a D ignora que mesmo fármacos de meia-vida curta podem se acumular perigosamente quando a TFG cai.`},
+
+{id:12, cat:'farmaco', stem:`Em um ensaio clínico de insuficiência cardíaca, o Carvedilol (um antagonista β-adrenérgico, com Emáx farmacológico menor do que um agonista β-adrenérgico experimental testado no mesmo estudo) demonstrou redução de mortalidade superior à do agonista experimental de maior Emáx. Esse achado ilustra qual princípio farmacodinâmico?`,
+options:[`Maior eficácia farmacológica (Emáx) sempre corresponde a maior benefício clínico.`,`Eficácia (Emáx) não é sinônimo de benefício clínico; um fármaco com mecanismo de ação mais amplo — como o Carvedilol, que além do antagonismo β-adrenérgico tem propriedades de bloqueio alfa-adrenérgico e antioxidantes — pode reduzir remodelamento cardíaco e mortalidade de forma mais eficaz do que um agonista de maior Emáx.`,`Antagonistas nunca devem ser utilizados no tratamento da insuficiência cardíaca.`,`A potência (CE50), e não a eficácia, é o principal determinante do benefício clínico nesse cenário.`], correct:1,
+explanation:`O material destaca explicitamente esse paradoxo: o Carvedilol, apesar de ter Emáx farmacológico menor que um agonista experimental, oferece benefício clínico superior (redução de mortalidade) na insuficiência cardíaca, porque seu mecanismo vai além do antagonismo β-adrenérgico — inclui bloqueio alfa-adrenérgico e propriedades antioxidantes, reduzindo o remodelamento cardíaco e a incidência de morte súbita. Isso demonstra que eficácia máxima (Emáx) não é sinônimo de benefício clínico. A alternativa A contraria diretamente essa conclusão; a C é uma generalização não sustentada pelo material (antagonistas como IECA, BRA e betabloqueadores são centrais no tratamento da IC); a D não é o conceito central ilustrado pelo caso.`},
+
+// ================= CARDIOVASCULAR =================
+{id:13, cat:'cardio', stem:`Paciente de 58 anos, hipertenso, inicia tratamento com Ramipril. Após cerca de 3 meses, passa a apresentar tosse seca persistente, mais incômoda à noite, sem relação com esforço físico ou secreção. Não há sinais de congestão pulmonar ao exame. Qual o mecanismo mais provável e a conduta indicada?`,
+options:[`A tosse decorre do acúmulo de bradicinina nos pulmões, consequência do bloqueio da ECA; a conduta é substituir o IECA por um Bloqueador de Receptor de Angiotensina II (BRA), como a Losartana, que não apresenta esse efeito.`,`A tosse é sinal de insuficiência cardíaca descompensada, sendo necessário aumentar a dose do IECA.`,`A tosse decorre de hipercalemia induzida pelo Ramipril, devendo-se associar um diurético poupador de potássio.`,`A tosse é um efeito raro e não justifica a substituição do fármaco; deve-se apenas associar um antitussígeno.`], correct:0,
+explanation:`Os IECA bloqueiam a enzima conversora de angiotensina, que também participa da degradação da bradicinina; o acúmulo desse mediador nos pulmões causa tosse seca em 10–20% dos pacientes, segundo o material. A conduta recomendada é a substituição por um BRA (ex.: Losartana), que bloqueia seletivamente o receptor AT1 sem interferir na bradicinina e, portanto, não causa tosse — essa é justamente a vantagem principal dos BRA citada no material. A tosse não está associada a IC descompensada nem a hipercalemia, e mascarar o sintoma com antitussígeno não resolve a causa farmacológica.`},
+
+{id:14, cat:'cardio', stem:`As diretrizes 2025 da Sociedade Brasileira de Cardiologia recomendam o Sacubitril/Valsartan (ARNI) como escolha preferencial para o bloqueio do sistema renina-angiotensina-aldosterona na insuficiência cardíaca com fração de ejeção reduzida, em vez do IECA isolado. Qual mecanismo farmacológico do componente Sacubitril justifica esse benefício adicional?`,
+options:[`O Sacubitril inibe a neprilisina, enzima que degrada os peptídeos natriuréticos (BNP e ANP); sua inibição aumenta os níveis desses peptídeos, promovendo vasodilatação, natriurese e redução da aldosterona.`,`O Sacubitril bloqueia diretamente o receptor AT1 da angiotensina II, substituindo a função do Valsartan.`,`O Sacubitril inibe a HMG-CoA redutase, reduzindo a síntese hepática de colesterol.`,`O Sacubitril atua como agonista dos receptores β1-adrenérgicos, aumentando a contratilidade miocárdica.`], correct:0,
+explanation:`O material descreve o Sacubitril como inibidor da neprilisina, enzima responsável por degradar peptídeos natriuréticos como BNP e ANP; sua inibição eleva os níveis desses peptídeos, promovendo vasodilatação, natriurese e redução de aldosterona — mecanismo que atua em sinergia com o bloqueio do receptor AT1 pelo Valsartan (o segundo componente do ARNI). Os ensaios clínicos citados mostram que o ARNI reduz mortalidade e hospitalização na IC-FEr em comparação aos IECA isolados, por isso é recomendado como primeira linha. As alternativas B, C e D descrevem mecanismos de outras classes farmacológicas (BRA, estatinas e agonistas beta-adrenérgicos), não do Sacubitril.`},
+
+{id:15, cat:'cardio', stem:`Paciente de 62 anos, asmático moderado, hipertenso, é medicado com Propranolol para controle pressórico. Nos meses seguintes, apresenta piora da dispneia e maior necessidade de broncodilatador de resgate. Qual o mecanismo desse efeito adverso e a conduta mais adequada?`,
+options:[`O Propranolol é cardiosseletivo e não deveria causar broncoespasmo; a piora da asma deve ter outra causa.`,`O Propranolol é um betabloqueador não seletivo, bloqueando também receptores β2 pulmonares e podendo causar broncoespasmo; a conduta é substituir por um betabloqueador cardiosseletivo (ex.: Atenolol, Bisoprolol) ou por outra classe anti-hipertensiva.`,`O Propranolol melhora a função pulmonar em asmáticos por reduzir a taquicardia reflexa.`,`A conduta correta é aumentar a dose de Propranolol para otimizar o controle pressórico, já que o broncoespasmo é autolimitado.`], correct:1,
+explanation:`Segundo o material, os receptores β2 (vasculares/pulmonares) promovem broncodilatação; betabloqueadores não seletivos, como o Propranolol e o Nadolol, bloqueiam tanto β1 quanto β2, podendo causar broncoespasmo — um efeito adverso listado explicitamente para pacientes asmáticos. A conduta correta é substituir por um betabloqueador seletivo β1 (Metoprolol, Atenolol, Bisoprolol), que reduz principalmente os efeitos cardíacos, ou por outra classe. As demais alternativas contrariam o mecanismo farmacológico descrito.`},
+
+{id:16, cat:'cardio', stem:`Paciente de 65 anos, hipertenso, em uso de Anlodipino, desenvolve edema bilateral de tornozelos que piora ao longo do dia e melhora com a elevação das pernas, sem sinais de congestão sistêmica (ausculta cardíaca e pulmonar normais, sem dispneia). Qual o mecanismo desse achado e uma conduta compatível com o material?`,
+options:[`O edema decorre de insuficiência cardíaca induzida pelo Anlodipino, exigindo suspensão imediata e diurético de alça.`,`O edema é um efeito adverso comum dos bloqueadores de canal de cálcio dihidropiridínicos, decorrente de vasodilatação arteriolar periférica preferencial; pode ser manejado com redução da dose, associação de IECA/BRA ou troca de classe.`,`O edema indica toxicidade renal direta do Anlodipino, sendo obrigatória a suspensão e investigação com exames de função renal.`,`O edema decorre de retenção de sódio por hiperaldosteronismo induzido pelo Anlodipino, devendo-se associar Espironolactona.`], correct:1,
+explanation:`As dihidropiridinas (Nifedipina, Amlodipina, Felodipina) são vasodilatadores potentes, com efeito inotrópico negativo mínimo, mas causam vasodilatação periférica significativa; o edema periférico é um efeito adverso listado explicitamente para essa subclasse, decorrente do desequilíbrio entre vasodilatação arteriolar e a pressão capilar resultante — não de insuficiência cardíaca, toxicidade renal ou hiperaldosteronismo. O manejo descrito no material inclui redução de dose, associação de IECA/BRA (que reduzem a pressão capilar) ou troca de classe anti-hipertensiva.`},
+
+{id:17, cat:'cardio', stem:`Paciente com insuficiência cardíaca descompensada e sinais de congestão pulmonar recebe Furosemida intravenosa para alívio dos sintomas. Considerando o material sobre diuréticos na insuficiência cardíaca, é correto afirmar que:`,
+options:[`Os diuréticos de alça, como a Furosemida, atuam na Alça de Henle (cotransportador Na-K-2Cl), são muito potentes e fundamentais para aliviar congestão e dispneia, mas não reduzem mortalidade.`,`A Furosemida atua no túbulo coletor, poupando potássio, e reduz mortalidade na insuficiência cardíaca da mesma forma que a Espironolactona.`,`Os diuréticos de alça são os fármacos de escolha para modificar o curso natural da doença e reduzir mortalidade na IC-FEr.`,`A Furosemida não apresenta risco de distúrbio eletrolítico, sendo segura mesmo sem monitorização.`], correct:0,
+explanation:`O material é explícito: os diuréticos de alça (Furosemida, Torasemida) atuam na Alça de Henle, são muito potentes e indicados em edema pulmonar e IC descompensada, sendo fundamentais para aliviar congestão e dispneia — mas "não reduzem mortalidade", ao contrário dos quatro pilares farmacológicos da IC-FEr (ARNI/IECA/BRA, betabloqueador, ARM, iSGLT2). A Furosemida atua na alça de Henle, não no túbulo coletor (onde agem os poupadores de potássio, como a Espironolactona), e causa hipocalemia, não a poupa. O material também cita risco de hipocalemia, hiperuricemia, hiperglicemia, ototoxicidade — contrariando a alternativa D.`},
+
+{id:18, cat:'cardio', stem:`Paciente em uso crônico de Atorvastatina para prevenção cardiovascular passa a consumir suco de toranja diariamente, por recomendação de uma dieta que desconhecia a interação. Semanas depois, desenvolve mialgia intensa e CK elevada. Qual o mecanismo farmacocinético dessa interação?`,
+options:[`O suco de toranja é um indutor da CYP3A4, reduzindo os níveis de Atorvastatina e causando mialgia por queda abrupta do efeito hipolipemiante.`,`O suco de toranja é um inibidor da CYP3A4, enzima responsável pelo metabolismo da Atorvastatina; sua inibição aumenta os níveis plasmáticos da estatina, elevando o risco de miotoxicidade e rabdomiólise.`,`O suco de toranja aumenta a excreção renal da Atorvastatina, reduzindo sua eficácia e causando mialgia por depleção de eletrólitos.`,`O suco de toranja não interfere no metabolismo de estatinas; a mialgia deve ser atribuída a outra causa.`], correct:1,
+explanation:`O suco de toranja (grapefruit) está listado, junto a macrolídeos, azólicos e Amiodarona, como inibidor da CYP3A4 — um processo rápido, por competição direta pelo sítio ativo da enzima. Como as estatinas (especialmente sinvastatina e atorvastatina) são metabolizadas por essa via, sua inibição aumenta os níveis plasmáticos da estatina, elevando o risco de miopatia e rabdomiólise — uma interação explicitamente citada no material sobre estatinas e sobre CYP450. A alternativa A inverte o mecanismo (o suco de toranja é inibidor, não indutor); as alternativas C e D não correspondem ao mecanismo farmacocinético descrito.`},
+
+{id:19, cat:'cardio', stem:`Paciente submetido a implante de stent farmacológico após síndrome coronariana aguda recebe terapia antiplaquetária dupla (DAPT) com Aspirina e um inibidor do receptor P2Y12. Sobre os mecanismos farmacológicos envolvidos nessa combinação, é correto afirmar que:`,
+options:[`A Aspirina inibe reversivelmente a COX-1, enquanto o inibidor de P2Y12 inibe de forma irreversível a cascata de coagulação.`,`A Aspirina inibe irreversivelmente a COX-1, reduzindo a síntese de tromboxano A2, enquanto o inibidor de P2Y12 (ex.: Clopidogrel, Prasugrel, Ticagrelor) bloqueia os receptores plaquetários, impedindo a ativação promovida por ADP — dois mecanismos distintos e complementares de inibição da agregação plaquetária.`,`Ambos os fármacos atuam pelo mesmo mecanismo, inibindo diretamente a cascata de coagulação plasmática.`,`A DAPT tem como objetivo principal reduzir o colesterol LDL e estabilizar placas ateroscleróticas.`], correct:1,
+explanation:`O material descreve claramente os dois mecanismos antiplaquetários que compõem a DAPT: a Aspirina inibe irreversivelmente a COX-1, reduzindo a síntese de tromboxano A2 (um potente agregante plaquetário), enquanto os inibidores de P2Y12 bloqueiam os receptores plaquetários que respondem ao ADP, impedindo a ativação promovida por esse mediador. Essa combinação de mecanismos complementares é o padrão para reduzir reinfartos e mortalidade após SCA. As alternativas A, C e D descrevem mecanismos incorretos: a Aspirina é irreversível (não reversível), nenhum dos dois atua na cascata de coagulação plasmática (isso é função dos anticoagulantes), e a DAPT não tem como alvo primário o LDL.`},
+
+{id:20, cat:'cardio', stem:`Paciente com fibrilação atrial de alto risco tromboembólico precisa iniciar anticoagulação oral. Comparando os anticoagulantes orais diretos (DOACs, como Apixabana e Rivaroxabana) com a Varfarina, qual das seguintes é uma vantagem farmacológica dos DOACs descrita no material?`,
+options:[`Os DOACs inibem a síntese hepática dos fatores II, VII, IX e X, exigindo monitorização rigorosa do RNI, assim como a Varfarina.`,`Os DOACs têm farmacocinética previsível, não requerem monitorização rotineira da coagulação e apresentam menos interações medicamentosas que a Varfarina, que é antagonista da vitamina K e possui múltiplas interações.`,`Os DOACs não possuem agentes reversores disponíveis, ao contrário da Varfarina.`,`Os DOACs atuam inibindo a agregação plaquetária, enquanto a Varfarina inibe a cascata de coagulação.`], correct:1,
+explanation:`O material contrasta claramente as duas classes: a Varfarina é uma antagonista da vitamina K que inibe a síntese dos fatores II, VII, IX e X, requer monitorização rigorosa com RNI e possui múltiplas interações; já os DOACs (inibidores diretos do fator Xa como Apixabana, Rivaroxabana, Edoxabana, ou do fator IIa como Dabigatrana) têm farmacocinética previsível, não requerem monitorização de coagulação e têm menos interações — essas são as vantagens explicitamente citadas. A alternativa A descreve o mecanismo da Varfarina, não dos DOACs. A C está incorreta: existem agentes reversores para os DOACs (Idarucizumabe para dabigatrana, Andexanet alfa para inibidores de Xa). A D está incorreta porque ambos os anticoagulantes atuam na cascata de coagulação, não na agregação plaquetária.`},
+
+{id:21, cat:'cardio', stem:`Um fármaco antiarrítmico apresenta, simultaneamente, propriedades de bloqueio de canais de sódio, antagonismo beta-adrenérgico, bloqueio de canais de potássio e bloqueio de canais de cálcio — combinando características das quatro classes da classificação de Vaughan-Williams. É considerado o antiarrítmico mais eficaz disponível, porém apresenta toxicidade sistêmica significativa (pulmonar, tireoidiana e hepática) com o uso crônico. Esse fármaco é:`,
+options:[`Propafenona`,`Verapamil`,`Amiodarona`,`Sotalol`], correct:2,
+explanation:`O material identifica explicitamente a Amiodarona (classificada primariamente como Classe III, bloqueadora de canais de potássio) como o antiarrítmico que possui propriedades das quatro classes de Vaughan-Williams simultaneamente, sendo considerado o mais eficaz, mas com toxicidade sistêmica relevante (pulmonar, tireoidiana e hepática) no uso crônico. A Propafenona é um bloqueador de canais de sódio (Classe Ic), o Verapamil é um bloqueador de canais de cálcio (Classe IV) e o Sotalol é um bloqueador de canais de potássio (Classe III), mas nenhum desses três combina propriedades das quatro classes como a Amiodarona.`},
+
+{id:22, cat:'cardio', stem:`Paciente com hipertensão arterial recentemente diagnosticada inicia tratamento com a combinação dupla em dose baixa de IECA + Bloqueador de Canal de Cálcio, conforme o Passo 1 do algoritmo da SBC 2025. Após 4 semanas, a meta pressórica não foi atingida. Qual é o próximo passo recomendado pelo algoritmo descrito no material?`,
+options:[`Adicionar um betabloqueador, já que essa classe é considerada primeira linha para hipertensão não complicada.`,`Aumentar a combinação dupla inicial para dose plena (Passo 2 do algoritmo); somente se a PA permanecer descontrolada, evoluir para combinação tripla com IECA/BRA + BCC + diurético tiazídico.`,`Suspender o tratamento farmacológico e reiniciar apenas com monoterapia em dose baixa.`,`Adicionar Espironolactona diretamente, sem antes otimizar a combinação dupla.`], correct:1,
+explanation:`O algoritmo descrito no material segue quatro passos: Passo 1 — combinação dupla em dose baixa (IECA ou BRA + BCC ou diurético tiazídico); Passo 2 — se a meta não for atingida após 4 semanas, aumentar para dose plena da combinação dupla inicial; Passo 3 — combinação tripla (IECA/BRA + BCC + diurético tiazídico) se ainda não controlada; Passo 4 — hipertensão resistente, adicionar Espironolactona (12,5–50 mg/dia). Além disso, o material destaca explicitamente que betabloqueadores não são primeira linha para HAS não complicada, sendo indicados apenas em condições clínicas específicas (IC, pós-IAM, FA, angina) — o que exclui a alternativa A. A Espironolactona (alternativa D) só entra no Passo 4, após otimização da combinação dupla e tripla.`},
+
+{id:23, cat:'cardio', stem:`Paciente recebe diagnóstico recente de insuficiência cardíaca com fração de ejeção reduzida (IC-FEr). Segundo as diretrizes 2025 da SBC citadas no material, qual é a estratégia recomendada para a introdução da terapia quádrupla fundacional (ARNI/IECA/BRA, betabloqueador, antagonista mineralocorticoide e iSGLT2)?`,
+options:[`Introduzir os quatro pilares sequencialmente, aguardando semanas entre cada classe antes de adicionar a próxima.`,`Introduzir os quatro pilares precocemente e de forma simultânea, ou em rápida sucessão em até 4 semanas, em doses iniciais, seguida de titulação para as doses-alvo.`,`Iniciar apenas com diurético de alça, pois é o único fármaco comprovadamente capaz de reduzir mortalidade na IC-FEr.`,`Reservar o iSGLT2 apenas para pacientes diabéticos, já que seu benefício depende do controle glicêmico.`], correct:1,
+explanation:`O material é explícito: "Recomenda-se a introdução precoce e simultânea (ou em rápida sucessão até 4 semanas) dos quatro pilares em doses iniciais, seguida de titulação para doses-alvo" — contrariando a introdução sequencial e espaçada da alternativa A. Os diuréticos de alça aliviam congestão, mas não reduzem mortalidade (alternativa C incorreta). O material também afirma que os iSGLT2 trazem "benefício cardiovascular independente do diabetes" na IC-FEr, contrariando a alternativa D.`},
+
+{id:24, cat:'cardio', stem:`Paciente em tratamento para angina estável, em uso regular de Isossorbida, toma Sildenafila por conta própria antes de uma atividade física, sem informar o cardiologista. Horas depois, apresenta hipotensão importante. Qual o mecanismo dessa interação e sua classificação de risco segundo o material?`,
+options:[`A associação de nitratos com inibidores da PDE5 (Sildenafila, Tadalafila, Vardenafila) causa vasodilatação extrema, levando a hipotensão refratária; trata-se de uma contraindicação.`,`A Sildenafila induz o metabolismo hepático da Isossorbida, reduzindo seu efeito e causando hipotensão paradoxal por rebote.`,`A interação é considerada de baixo risco e não contraindicada, sendo apenas necessário reduzir a dose de nitrato.`,`A Sildenafila não interage com nitratos, pois atua em vias farmacológicas completamente distintas.`], correct:0,
+explanation:`O material lista explicitamente a associação de nitratos com inibidores da PDE5 (Sildenafila, Tadalafila, Vardenafila) como causadora de vasodilatação extrema, levando a hipotensão refratária, classificando-a como contraindicação. Ambas as classes convergem na via do óxido nítrico/GMPc — os nitratos aumentam a produção de GMPc e os inibidores da PDE5 impedem sua degradação, potencializando de forma perigosa a vasodilatação. As demais alternativas descrevem mecanismos incorretos ou minimizam indevidamente o risco, que o material classifica como contraindicação absoluta, não como interação de baixo risco ou ausente.`},
+
+{id:25, cat:'cardio', stem:`Paciente do sexo masculino, 60 anos, sofreu infarto agudo do miocárdio há 2 meses (doença aterosclerótica clínica estabelecida) e está em uso de Atorvastatina em dose alta. O LDL-c mais recente é de 62 mg/dL. Segundo as metas de LDL-c da SBC 2025 citadas no material, esse paciente pertence a qual categoria de risco cardiovascular, qual a meta de LDL-c correspondente, e qual a conduta se a meta não for atingida apenas com a estatina?`,
+options:[`Risco baixo; meta de LDL-c < 130 mg/dL; a meta já foi atingida, não sendo necessária nenhuma conduta adicional.`,`Risco muito alto (doença aterosclerótica clínica estabelecida, ex.: pós-IAM); meta de LDL-c < 50 mg/dL; se não atingida apenas com estatina, a Ezetimiba é a primeira escolha para associação.`,`Risco intermediário; meta de LDL-c < 100 mg/dL; a meta já foi atingida.`,`Risco alto; meta de LDL-c < 70 mg/dL; a conduta em caso de meta não atingida é a suspensão da estatina e início isolado de fibrato.`], correct:1,
+explanation:`O material classifica pacientes com doença aterosclerótica clínica (ex.: pós-IAM, AVC) como risco muito alto, com meta de LDL-c < 50 mg/dL — e, no caso descrito, o LDL-c de 62 mg/dL ainda está acima dessa meta, apesar de estar próximo. Quando a meta não é atingida apenas com estatina, a Ezetimiba é citada como "a primeira escolha para associação com estatinas quando a meta não é atingida"; os inibidores de PCSK9 são reservados para hipercolesterolemia familiar ou risco muito alto não controlado mesmo com essas medidas, e os fibratos são indicados principalmente para hipertrigliceridemia severa, não para reduzir LDL-c isoladamente.`},
+
+// ================= PSICOFARMACOLOGIA =================
+{id:26, cat:'psico', stem:`Paciente em uso de Risperidona há 6 meses para esquizofrenia desenvolve amenorreia e galactorreia bilateral, sem uso de outras medicações hormonais. Qual via dopaminérgica está implicada nesse efeito adverso, e qual o mecanismo?`,
+options:[`Via mesolímbica; o bloqueio D2 nessa via reduz os sintomas positivos, mas também suprime a prolactina.`,`Via nigroestriatal; o bloqueio D2 nessa via causa efeitos extrapiramidais que se manifestam como galactorreia.`,`Via tuberoinfundibular; a dopamina normalmente inibe tonicamente a secreção de prolactina pela hipófise anterior, e o bloqueio D2 nessa via eleva a prolactina plasmática, causando galactorreia e amenorreia.`,`Via mesocortical; a hipoatividade dessa via está diretamente relacionada ao aumento da prolactina.`], correct:2,
+explanation:`O material descreve as quatro vias dopaminérgicas e seus efeitos: a via tuberoinfundibular conecta o hipotálamo à hipófise anterior, e a dopamina atua inibindo tonicamente a secreção de prolactina; o bloqueio D2 nessa via (efeito de antipsicóticos, especialmente Risperidona e Haloperidol) eleva a prolactina, causando galactorreia e amenorreia. A via mesolímbica está associada a sintomas positivos (hiperatividade = delírios/alucinações, tratados pelo bloqueio D2 ali). A via nigroestriatal está associada a efeitos extrapiramidais (distonia, parkinsonismo, acatisia), não a hiperprolactinemia. A via mesocortical está associada a sintomas negativos/cognitivos (hipoatividade), sem relação direta com prolactina.`},
+
+{id:27, cat:'psico', stem:`Paciente de 24 anos inicia Haloperidol para primeiro episódio psicótico. Nas primeiras 24 horas, desenvolve torcicolo intenso e doloroso, com desvio da cabeça, trismo e desvio dos olhos para cima. Está consciente, orientado, afebril e com sinais vitais normais. Qual o diagnóstico e a conduta de urgência?`,
+options:[`Acatisia; a conduta é reduzir a dose e associar Propranolol.`,`Distonia aguda, uma reação extrapiramidal que ocorre nas primeiras horas a dias após o início do antipsicótico por bloqueio D2 excessivo na via nigroestriatal; a conduta de urgência é a administração de anticolinérgico (Biperideno) por via intramuscular.`,`Síndrome Neuroléptica Maligna; a conduta é suspender o antipsicótico e administrar Dantrolene.`,`Discinesia tardia; a conduta é trocar para Clozapina.`], correct:1,
+explanation:`O material descreve a linha do tempo dos efeitos extrapiramidais: horas a dias após o início do antipsicótico surge a distonia aguda — espasmos musculares sustentados e dolorosos (torcicolo, trismo, crise oculógira), tratada com anticolinérgico IM (Biperideno). A acatisia surge em dias a semanas e se manifesta como inquietação motora, não espasmo muscular. A Síndrome Neuroléptica Maligna cursa com febre alta, rigidez em "cano de chumbo" e alteração do nível de consciência, ausentes neste caso. A discinesia tardia surge após meses a anos de uso crônico, com movimentos involuntários repetitivos — incompatível com o quadro agudo em 24 horas.`},
+
+{id:28, cat:'psico', stem:`Paciente em uso de antipsicótico há 3 semanas relata inquietação interna intensa, necessidade compulsiva de ficar se movendo (andar de um lado para o outro, balançar as pernas), sem febre e sem piora dos sintomas psicóticos propriamente ditos. Qual o diagnóstico mais provável e a armadilha clínica a ser evitada?`,
+options:[`Trata-se de acatisia, um efeito extrapiramidal que surge em dias a semanas e é frequentemente confundida com agitação psicótica; a armadilha é aumentar a dose do antipsicótico pensando tratar-se de piora da psicose, quando a conduta correta envolve redução de dose, troca de antipsicótico ou betabloqueador (Propranolol).`,`Trata-se de discinesia tardia, e a conduta é aumentar a dose do antipsicótico.`,`Trata-se de parkinsonismo induzido por antipsicótico, tratado com Levodopa.`,`Trata-se de piora dos sintomas psicóticos positivos, devendo-se aumentar a dose do antipsicótico.`], correct:0,
+explanation:`O material define a acatisia como inquietação interna e urgência motora que surge em dias a semanas após o início do antipsicótico, sendo "frequentemente confundida com agitação psicótica" — essa confusão é a armadilha clínica central, pois aumentar a dose do antipsicótico (pensando tratar-se de piora da psicose) na verdade piora a acatisia. A conduta correta descrita é reduzir a dose, trocar o fármaco ou associar Propranolol. Discinesia tardia envolve movimentos involuntários (não inquietação subjetiva) e surge após meses a anos. Parkinsonismo cursa com tremor, rigidez e bradicinesia, tratado com anticolinérgicos ou troca de antipsicótico — Levodopa não é mencionada no material para esse contexto.`},
+
+{id:29, cat:'psico', stem:`Paciente obeso (IMC 32), com primeiro episódio psicótico, precisa iniciar antipsicótico. Considerando a tabela comparativa de perfil metabólico entre os antipsicóticos atípicos apresentada no material, qual opção seria mais adequada para minimizar o risco de ganho de peso adicional?`,
+options:[`Olanzapina, por sua excelente eficácia antipsicótica, mesmo com alto risco metabólico.`,`Clozapina, pelo seu baixo risco de efeitos extrapiramidais.`,`Aripiprazol, que na tabela comparativa apresenta o menor risco relativo de ganho de peso entre os antipsicóticos atípicos comparados, ainda que com risco relativamente maior de acatisia.`,`Risperidona, pelo baixo risco de hiperprolactinemia.`], correct:2,
+explanation:`Na tabela comparativa do material (Risperidona, Olanzapina, Quetiapina, Aripiprazol, Clozapina), o Aripiprazol é o único classificado com risco de ganho de peso "+" (baixo), enquanto Olanzapina e Clozapina apresentam "+++" (alto risco) e Risperidona e Quetiapina "++" (risco moderado). Em compensação, o Aripiprazol apresenta risco "+++" de acatisia/EPS na mesma tabela — uma troca relevante, mas o enunciado pede especificamente o menor risco metabólico. A Risperidona, ao contrário do afirmado na alternativa D, tem alto risco de hiperprolactinemia ("+++" na tabela).`},
+
+{id:30, cat:'psico', stem:`Paciente com esquizofrenia refratária, após falha de dois ensaios antipsicóticos adequados, inicia Clozapina. Qual monitorização é obrigatória devido ao risco de um efeito adverso hematológico grave, e qual é esse efeito?`,
+options:[`Miocardite; deve-se monitorizar troponina diariamente durante todo o tratamento.`,`Agranulocitose (risco de aproximadamente 1%); é obrigatória monitorização hematológica rigorosa, especialmente nas primeiras semanas de tratamento.`,`Discinesia tardia; deve-se monitorizar movimentos involuntários mensalmente.`,`Hiperprolactinemia; deve-se monitorizar prolactina semanalmente.`], correct:1,
+explanation:`O material lista a agranulocitose (risco de aproximadamente 1%) como um dos efeitos adversos graves da Clozapina, exigindo monitorização hematológica rigorosa — sendo justamente por esse risco que a Clozapina é reservada para esquizofrenia resistente ao tratamento, após falha de dois ensaios adequados. Miocardite também é citada como risco (maior no primeiro mês, monitorado por troponina e sinais clínicos), mas não é a resposta correspondente ao efeito hematológico perguntado. Discinesia tardia é um efeito extrapiramidal tardio de antipsicóticos em geral, e a Clozapina justamente tem baixo risco de EPS. Hiperprolactinemia também não é o efeito hematológico em questão, e a Clozapina tem baixo risco desse efeito.`},
+
+{id:31, cat:'psico', stem:`Paciente com transtorno depressivo maior, com histórico de esquecimento frequente de doses e receio de síndrome de descontinuação, precisa de um ISRS que ofereça maior proteção contra esse risco. Qual característica farmacocinética torna a Fluoxetina mais adequada nesse cenário, entre os ISRS descritos no material?`,
+options:[`A Fluoxetina tem meia-vida longa (até 2 semanas), o que reduz o risco de síndrome de descontinuação em caso de doses esquecidas.`,`A Fluoxetina é a mais sedativa entre os ISRS, o que facilita a adesão.`,`A Fluoxetina apresenta risco dose-dependente de prolongamento do QTc, sendo a mais segura para uso irregular.`,`A Fluoxetina tem meia-vida curta, exigindo administração rigorosamente pontual.`], correct:0,
+explanation:`O material caracteriza a Fluoxetina especificamente pela meia-vida longa (até 2 semanas), associada a menor risco de descontinuação — uma vantagem farmacocinética relevante para pacientes com adesão irregular, pois a concentração plasmática cai mais lentamente mesmo com doses esquecidas. A alternativa B descreve a Paroxetina (mais sedativa, associada a ganho de peso) e, na verdade, a Paroxetina tem meia-vida curta e alto risco de descontinuação abrupta — o oposto da Fluoxetina. O risco de prolongamento do QTc dose-dependente é atribuído ao Citalopram, não à Fluoxetina.`},
+
+{id:32, cat:'psico', stem:`Paciente com transtorno depressivo maior associado a dor neuropática relacionada a neuropatia diabética. Qual classe de antidepressivo é descrita no material como primeira linha para dor crônica e neuropatia diabética, e qual seu mecanismo?`,
+options:[`ISRS, por atuarem exclusivamente na serotonina, sistema suficiente para o controle da dor neuropática.`,`Bupropiona, por inibir a recaptação de dopamina e noradrenalina.`,`Duloxetina (IRSN), por promover inibição dupla e balanceada da recaptação de serotonina e noradrenalina desde as doses iniciais, sendo citada como primeira linha para dor crônica, fibromialgia e neuropatia diabética; requer atenção ao risco de hepatotoxicidade.`,`Mirtazapina, por seu antagonismo alfa-2 adrenérgico.`], correct:2,
+explanation:`O material descreve a Duloxetina como um IRSN com inibição dupla balanceada desde as doses iniciais, citando explicitamente que é "primeira linha para dor crônica, fibromialgia e neuropatia diabética", com o alerta de "risco de hepatotoxicidade (evitar em hepatopatas)". Essa relação também é reforçada pela seção sobre serotonina e noradrenalina, que explica que a via descendente inibitória da dor depende de ambos os neurotransmissores, tornando antidepressivos duais (Duloxetina, Venlafaxina) essenciais no manejo da dor crônica. ISRS puros (A), Bupropiona (B, que atua em dopamina/noradrenalina, não serotonina/dor) e Mirtazapina (D) não são descritos como primeira linha para essa indicação específica no material.`},
+
+{id:33, cat:'psico', stem:`Paciente com epilepsia mal controlada e depressão maior necessita iniciar um antidepressivo. Qual classe/fármaco deve ser evitado nesse paciente, segundo o material, e por qual motivo farmacológico?`,
+options:[`Sertralina, por seu perfil cardiovascular desfavorável.`,`Bupropiona, pois reduz o limiar convulsivo, sendo contraindicada em epilepsia e em distúrbios alimentares.`,`Mirtazapina, por causar disfunção sexual grave em epilépticos.`,`Escitalopram, pelo alto risco de prolongamento do QTc em epilépticos.`], correct:1,
+explanation:`O material identifica explicitamente a Bupropiona (um NDRI que inibe a recaptação de dopamina e noradrenalina) como reduzindo o limiar convulsivo, sendo "contraindicada em epilepsia e distúrbios alimentares" — portanto o fármaco a ser evitado nesse paciente. A Sertralina é descrita com excelente perfil cardiovascular, não desfavorável. A Mirtazapina é descrita como não causando disfunção sexual nem náuseas — o oposto do afirmado na alternativa C. O risco de prolongamento de QTc dose-dependente descrito no material é do Citalopram, não do Escitalopram, e não há relação direta com epilepsia mencionada para nenhum dos dois.`},
+
+{id:34, cat:'psico', stem:`Paciente com depressão maior, após confirmação de adesão adequada e uso de Sertralina em dose máxima tolerada por tempo suficiente (8 semanas), permanece sem resposta clínica significativa, e o diagnóstico de transtorno bipolar foi ativamente descartado. Segundo as etapas de manejo da depressão resistente descritas no material, quais são as estratégias de potencialização citadas?`,
+options:[`Apenas aumentar indefinidamente a dose do mesmo ISRS, sem considerar trocas ou associações.`,`Antipsicóticos atípicos em doses baixas (Aripiprazol, Quetiapina, Risperidona), Lítio (padrão-ouro em potencialização e prevenção de suicídio) e hormônio tireoidiano (T3/triiodotironina).`,`Apenas benzodiazepínicos, para tratar os sintomas residuais de ansiedade associados à depressão.`,`Suspensão definitiva de qualquer tratamento farmacológico e encaminhamento exclusivo para eletroconvulsoterapia.`], correct:1,
+explanation:`O material descreve quatro etapas para depressão resistente: otimização, troca (switching) de classe, potencialização e intervenções avançadas. Na etapa de potencialização, cita explicitamente: antipsicóticos atípicos em doses baixas (Aripiprazol, Quetiapina, Risperidona), Lítio como "padrão-ouro em potencialização e prevenção de suicídio", e hormônio tireoidiano (T3), que pode acelerar a resposta antidepressiva mesmo em pacientes eutireoideos. Intervenções avançadas (Escetamina, ECT, rTMS) são reservadas para casos mais graves ou refratários às etapas anteriores, não sendo a primeira escolha após apenas uma tentativa adequada de ISRS.`},
+
+{id:35, cat:'psico', stem:`Paciente de 20 anos inicia antidepressivo para transtorno depressivo maior. A equipe médica orienta a família sobre um alerta de segurança específico para essa faixa etária nas primeiras semanas de tratamento. Qual é esse alerta e qual mecanismo o explica?`,
+options:[`Black Box Warning da FDA: antidepressivos podem aumentar o risco de ideação e comportamento suicida em jovens (<25 anos) nas primeiras semanas ou após ajustes de dose, possivelmente por um "paradoxo da ativação", em que energia e volição melhoram antes do humor, podendo ativar planos suicidas preexistentes, e pela acatisia induzida, que gera angústia e impulsividade.`,`O risco só existe em idosos acima de 65 anos, não em jovens.`,`Antidepressivos não têm qualquer relação com risco suicida em nenhuma faixa etária, segundo o material.`,`O risco decorre exclusivamente de overdose intencional com os comprimidos, sem relação farmacodinâmica com o mecanismo de ação do fármaco.`], correct:0,
+explanation:`O material apresenta o Black Box Warning da FDA especificamente para o risco aumentado de ideação e comportamento suicida em jovens (<25 anos) nas primeiras semanas de tratamento ou após ajustes de dose, explicando esse fenômeno pelo "paradoxo da ativação" (energia e volição melhoram antes do humor, podendo ativar planos suicidas) e pela acatisia induzida (inquietação que gera angústia e impulsividade), além do risco de a ativação revelar transtorno bipolar não diagnosticado (virada maníaca). O protocolo de segurança inclui monitorização próxima (contatos semanais no primeiro mês), restrição de acesso a quantidades prescritas e educação familiar — nada disso se limita a idosos ou a overdose intencional isolada.`},
+
+{id:36, cat:'psico', stem:`Paciente em tratamento para depressão maior há 2 semanas, em uso de um antidepressivo IRSN, retorna à consulta relatando estar "curada e melhor do que nunca". Dorme apenas 3 horas por noite sem sentir cansaço, fala de forma acelerada e fez compras impulsivas de alto valor. Qual o diagnóstico atual e a conduta farmacológica imediata?`,
+options:[`Melhora completa do quadro depressivo; deve-se apenas manter a dose atual do antidepressivo.`,`Virada maníaca induzida por antidepressivo (o antidepressivo está "alimentando" a mania); a conduta é suspender imediatamente o antidepressivo e iniciar tratamento antimaníaco (antipsicótico atípico ou estabilizador de humor como Lítio ou Valproato).`,`Efeito colateral esperado e autolimitado do IRSN, sem necessidade de qualquer intervenção.`,`Síndrome de descontinuação do antidepressivo, devendo-se aumentar a dose.`], correct:1,
+explanation:`O material descreve exatamente esse padrão clínico (euforia, redução da necessidade de sono, fala acelerada, impulsividade/gastos excessivos, início recente de antidepressivo) como virada maníaca — o antidepressivo "alimentando" a mania. A conduta é suspender imediatamente o antidepressivo e iniciar tratamento antimaníaco (antipsicótico atípico como Olanzapina/Quetiapina, ou estabilizador como Lítio/Valproato); além disso, o material destaca que essa virada "não é apenas um efeito colateral" — ela altera o diagnóstico do paciente de depressão unipolar para transtorno bipolar, contraindicando o uso futuro de antidepressivos em monoterapia. Nenhuma das demais alternativas corresponde à conduta correta descrita no material.`},
+
+{id:37, cat:'psico', stem:`Paciente em uso de Lítio para transtorno bipolar apresenta poliúria e polidipsia importantes. A equipe médica revisa o plano de monitorização do fármaco. Segundo o material, quais são a janela terapêutica do Lítio e os principais parâmetros a monitorizar, além dos riscos de interação?`,
+options:[`A litemia-alvo situa-se entre 0,6 e 1,2 mEq/L; deve-se monitorizar função renal (ureia/creatinina, pelo risco de diabetes insipidus nefrogênico) e função tireoidiana (TSH e T4L a cada 6 meses, pelo risco de hipotireoidismo induzido); AINEs, diuréticos tiazídicos e IECA/BRA reduzem a excreção renal do Lítio e podem elevar perigosamente a litemia.`,`A litemia-alvo é entre 2,0 e 3,0 mEq/L, e não há necessidade de monitorização renal ou tireoidiana.`,`O Lítio não tem risco de intoxicação, podendo ser titulado livremente sem dosagens regulares.`,`O Lítio é excretado predominantemente pelo fígado, sendo a função hepática o principal parâmetro a monitorizar.`], correct:0,
+explanation:`O material especifica a janela terapêutica estreita do Lítio (litemia-alvo entre 0,6 e 1,2 mEq/L, com dosagem regular obrigatória), o risco de diabetes insipidus nefrogênico (excreção 100% renal, monitorar ureia e creatinina) e de hipotireoidismo induzido (monitorar TSH e T4L a cada 6 meses). Também alerta especificamente que AINEs, diuréticos tiazídicos e IECA/BRA reduzem a excreção renal do Lítio e "disparam a litemia", podendo causar intoxicação (sinais: tremores grosseiros, ataxia, confusão mental, convulsões, acima de 1,5 mEq/L). As demais alternativas contradizem diretamente esses dados: a faixa terapêutica citada em B é tóxica, não há ausência de risco de intoxicação (C), e a excreção é renal, não hepática (D).`},
+
+{id:38, cat:'psico', stem:`Mulher de 27 anos, em idade fértil e planejando engravidar, está em tratamento para transtorno bipolar. Comparando o Valproato e a Lamotrigina descritos no material quanto ao uso nessa população, é correto afirmar que:`,
+options:[`O Valproato é seguro na gestação e deve ser mantido, pois é eficaz tanto para mania quanto para depressão bipolar.`,`O Valproato apresenta risco altíssimo de defeitos do tubo neural, sendo contraindicado em mulheres em idade fértil sem contracepção eficaz; a Lamotrigina, por sua vez, é considerada segura na gravidez e é eficaz na prevenção de episódios depressivos (não na mania aguda), mas exige titulação extremamente lenta pelo risco de Síndrome de Stevens-Johnson, especialmente se associada ao Valproato (que dobra os níveis de Lamotrigina).`,`A Lamotrigina é eficaz para tratar mania aguda e não tem qualquer risco dermatológico relevante.`,`Ambos os fármacos têm o mesmo perfil de segurança na gestação e podem ser usados de forma intercambiável.`], correct:1,
+explanation:`O material é explícito quanto à "teratogenicidade extrema" do Valproato, com "risco altíssimo de defeitos do tubo neural", sendo contraindicado em mulheres em idade fértil sem contracepção eficaz. Já a Lamotrigina é descrita como neutra para o peso, sem sedação significativa e "segura na gravidez", sendo indicada para prevenção de episódios depressivos no transtorno bipolar (mas "não eficaz para mania aguda"). O alerta crítico da Lamotrigina é o risco de Síndrome de Stevens-Johnson, exigindo titulação extremamente lenta, com interação perigosa com o Valproato, que "dobra os níveis de lamotrigina". Essas informações contrariam diretamente as alternativas A, C e D.`},
+
+{id:39, cat:'psico', stem:`Paciente de 80 anos, em uso de Clonazepam há mais de 10 anos para "insônia e nervosismo", é trazida pela família após duas quedas no último mês, com queixas de sonolência diurna excessiva e esquecimento progressivo. Segundo os Critérios de Beers citados no material, qual é a conduta adequada?`,
+options:[`Manter o Clonazepam, pois em idosos com uso prolongado o risco de quedas e prejuízo cognitivo é desprezível.`,`Os benzodiazepínicos de meia-vida longa são potencialmente inapropriados em idosos pelos Critérios de Beers, devido ao risco de sedação, quedas, fraturas e prejuízo cognitivo; a conduta é a desprescrição gradual (tapering), reduzindo a dose progressivamente, associada a estratégias não farmacológicas — nunca a suspensão abrupta.`,`O Flumazenil deve ser prescrito cronicamente para reverter os efeitos cognitivos e motores do benzodiazepínico, permitindo sua manutenção.`,`A suspensão deve ser abrupta e imediata, dado o risco de quedas.`], correct:1,
+explanation:`O material descreve exatamente esse cenário (idoso em uso crônico de benzodiazepínico de meia-vida longa, com quedas e prejuízo cognitivo) como compatível com os Critérios de Beers, que classificam esses fármacos como potencialmente inapropriados em idosos pelo risco de sedação, ataxia, quedas, fraturas e prejuízo cognitivo (podendo mimetizar quadros de demência — pseudodemência). A conduta correta é a desprescrição gradual (tapering), nunca a suspensão abrupta, que pode precipitar convulsões e delirium; o Flumazenil não é indicado para reversão crônica ambulatorial.`},
+
+{id:40, cat:'psico', stem:`Paciente internado por fratura de fêmur, sem uso de medicações contínuas relatado, mas com histórico familiar de consumo regular e não quantificado de álcool. No terceiro dia de internação, apresenta taquicardia, sudorese profusa, tremores intensos e relata ver "insetos subindo pela parede". Segundo a cronologia da abstinência alcoólica descrita no material, qual o diagnóstico e a conduta correta (incluindo o erro comum a ser evitado)?`,
+options:[`Delirium Tremens, compatível com a janela de 48–72 horas de abstinência; a conduta correta é administrar Tiamina (vitamina B1) antes de qualquer infusão de glicose, seguida de benzodiazepínicos guiados por protocolo (ex.: CIWA-Ar); o erro comum a evitar é prescrever apenas Haloperidol para a agitação, pois antipsicóticos reduzem o limiar convulsivo e não tratam a hiperatividade autonômica.`,`Síndrome Neuroléptica Maligna, devendo-se suspender qualquer antipsicótico em uso.`,`Intoxicação aguda por álcool, tratada apenas com observação clínica, sem necessidade de benzodiazepínicos.`,`Síndrome Serotoninérgica, tratada com Ciproeptadina.`], correct:0,
+explanation:`O material descreve a cronologia da abstinência alcoólica: 6–12h (tremores finos, sudorese, taquicardia), 12–48h (alucinose alcoólica e convulsões), 48–72h (Delirium Tremens — confusão, agitação severa, instabilidade autonômica, risco de morte) — compatível com o quadro do terceiro dia de internação. O manejo correto envolve Tiamina antes da glicose (prevenindo Encefalopatia de Wernicke) e benzodiazepínicos guiados por protocolo como o CIWA-Ar. O material alerta explicitamente sobre o "erro fatal" de prescrever apenas Haloperidol nessa situação, pois antipsicóticos reduzem o limiar convulsivo e não tratam a hiperatividade autonômica, aumentando o risco de morte. Não há relação com síndrome neuroléptica maligna, intoxicação aguda isolada ou síndrome serotoninérgica nesse quadro.`},
+
+{id:41, cat:'psico', stem:`Paciente em uso crônico de Sertralina para transtorno obsessivo-compulsivo recebe Tramadol para dor após entorse de tornozelo. Dois dias depois, é levado ao pronto-socorro agitado, confuso, com FC 135 bpm, PA 170/100 mmHg, temperatura 39,5°C, sudorese profusa, tremores generalizados e clônus ocular espontâneo. Comparando esse quadro com a Síndrome Neuroléptica Maligna, qual achado é mais específico para diferenciá-los, e qual a conduta correta?`,
+options:[`A presença de rigidez em "cano de chumbo" e reflexos diminuídos definiria Síndrome Serotoninérgica; a conduta seria Dantrolene.`,`O clônus e a hiperreflexia (mais evidentes em membros inferiores) são achados característicos da Síndrome Serotoninérgica (desenvolvida em horas, por excesso de serotonina pela associação ISRS + Tramadol), diferente da Síndrome Neuroléptica Maligna, que se desenvolve em dias a semanas com rigidez em "cano de chumbo" e reflexos diminuídos (por bloqueio D2); a conduta inclui suspender os agentes serotoninérgicos e administrar benzodiazepínicos IV, resfriamento ativo e suporte.`,`Ambas as síndromes são indistinguíveis clinicamente e tratadas da mesma forma, com Bromocriptina.`,`O quadro é compatível com Síndrome Neuroléptica Maligna, pois há febre alta; a conduta é suspender antipsicóticos, que o paciente não estava usando.`], correct:1,
+explanation:`O material contrasta explicitamente as duas síndromes: a Síndrome Serotoninérgica desenvolve-se em horas (associação ISRS + Tramadol é citada como gatilho explícito), com clônus (achado mais específico) e hiperreflexia (excesso de serotonina); já a Síndrome Neuroléptica Maligna desenvolve-se ao longo de dias a semanas, com rigidez em "cano de chumbo" e reflexos DIMINUÍDOS (bloqueio D2). A conduta na Síndrome Serotoninérgica inclui suspender os agentes serotoninérgicos, administrar benzodiazepínicos IV (controlam agitação, clônus/rigidez e, consequentemente, a temperatura), resfriamento ativo e, em casos graves, Ciproeptadina — não Dantrolene/Bromocriptina, que são tratamentos da SNM. A alternativa D ignora que o paciente não usava antipsicótico, tornando SNM incompatível.`},
+
+{id:42, cat:'psico', stem:`Paciente em surto psicótico agudo, muito agitado e agressivo, recebe Olanzapina intramuscular para contenção química. A equipe de enfermagem cogita associar um benzodiazepínico intramuscular (Midazolam) para reforçar a sedação. Qual a orientação correta segundo o material?`,
+options:[`A associação é segura e recomendada para potencializar a sedação em casos de agitação grave.`,`A associação de Olanzapina IM com benzodiazepínico IM (ex.: Lorazepam, Midazolam), simultaneamente ou em intervalo de 1 a 2 horas, é uma combinação com Black Box Warning por altíssimo risco de depressão respiratória fatal, bradicardia e hipotensão severa — deve ser evitada.`,`Essa associação é indicada exclusivamente em pacientes idosos, sendo contraindicada apenas em jovens.`,`Não há qualquer risco descrito para essa combinação; o único cuidado é monitorizar a glicemia.`], correct:1,
+explanation:`O material apresenta esse alerta como um Black Box Warning explícito: "NUNCA administre Olanzapina IM e Benzodiazepínicos IM (ex: Lorazepam, Midazolam) simultaneamente ou no intervalo de 1 a 2 horas. Esta combinação possui altíssimo risco de causar depressão respiratória fatal, bradicardia e hipotensão severa." Portanto a associação deve ser evitada, contrariando diretamente as alternativas A, C e D.`},
+
+{id:43, cat:'psico', stem:`Paciente de 74 anos, internado por pneumonia, desenvolve quadro de início agudo (horas), com curso flutuante ao longo do dia, desatenção e alucinações visuais, alternando períodos de agitação e sonolência. A família relata que ele estava lúcido antes da internação. Qual o diagnóstico mais provável e a conduta inicial, segundo o material?`,
+options:[`Esquizofrenia de início tardio; iniciar antipsicótico em dose plena imediatamente.`,`Delirium (estado confusional agudo); a conduta envolve investigar causas orgânicas de base (infecção, distúrbios metabólicos, retenção urinária, efeito anticolinérgico de medicações), priorizar medidas não farmacológicas (reorientação, iluminação adequada, presença da família) e evitar benzodiazepínicos, que pioram o delirium; antipsicóticos em dose baixa (ex.: Haloperidol) apenas se houver agitação severa com risco de dano.`,`Transtorno bipolar em fase maníaca; iniciar Lítio imediatamente.`,`Depressão psicótica; iniciar antidepressivo tricíclico.`], correct:1,
+explanation:`O material descreve a tríade diagnóstica do delirium — início agudo (horas a poucos dias), curso flutuante (alternância de sintomas) e atenção afetada — exatamente compatível com o quadro descrito, tipicamente precipitado por uma causa médica de base (neste caso, possivelmente relacionada à infecção pulmonar). A conduta prioriza a investigação de causas orgânicas, medidas não farmacológicas, e explicitamente orienta "evite benzodiazepínicos (pioram o delirium)", reservando antipsicóticos em dose baixa apenas para agitação severa com risco de dano. As demais hipóteses diagnósticas (esquizofrenia de início tardio, mania, depressão psicótica) não são compatíveis com o início agudo e curso flutuante característicos do delirium, e a "Regra de Ouro" do material reforça: "Diferenciar delirium de psicose primária antes de pensar em receptor."`},
+
+// ================= ENDOCRINOLOGIA =================
+{id:44, cat:'endo', stem:`Paciente com Diabetes Mellitus tipo 1 há 5 anos, em esquema basal-bolus, decide pular a dose de insulina basal em um dia de jejum prolongado por procedimento, argumentando que "sem comer, não precisa de insulina". Qual o risco farmacológico dessa conduta, segundo o material?`,
+options:[`Não há risco relevante, pois a insulina basal serve apenas para cobrir as refeições.`,`A insulina basal não é opcional no DM1: ela suprime a produção hepática de glicose e a lipólise mesmo quando o paciente não está comendo; sua ausência permite que o glucagon fique relativamente sem oposição, intensificando glicogenólise, gliconeogênese e lipólise, podendo levar à cetoacidose diabética.`,`A insulina basal pode ser suspensa com segurança em qualquer período de jejum superior a 8 horas.`,`O risco está apenas relacionado à hiperglicemia leve, sem relação com cetoacidose.`], correct:1,
+explanation:`O material explica que, no DM1, a ausência de insulina remove o sinal anabólico e deixa o glucagon relativamente sem oposição, fazendo o fígado liberar combustível mesmo quando a glicose já está alta — intensificando glicogenólise, gliconeogênese, lipólise e produção de corpos cetônicos, podendo evoluir para cetoacidose. Por isso, "a insulina basal não é opcional no DM1: ela suprime a produção hepática e a lipólise mesmo quando o paciente não está comendo", sendo necessária para prevenir cetose, catabolismo e cetoacidose (referência ADA 2026 citada no material). As demais alternativas contrariam diretamente essa recomendação central.`},
+
+{id:45, cat:'endo', stem:`Júlia, paciente com DM1, pratica exercício físico intenso no final da tarde e, historicamente, corrige agressivamente a glicemia ao deitar quando ela está acima de 150 mg/dL, mesmo já tendo se exercitado. Nas últimas semanas, vem apresentando episódios repetidos de hipoglicemia noturna. Qual a explicação farmacológica mais provável e a conduta recomendada?`,
+options:[`O exercício reduz a sensibilidade à insulina, e a hipoglicemia é apenas coincidência, não relacionada à correção ao deitar.`,`O exercício aumenta a sensibilidade à insulina de forma aguda e tardia; a correção agressiva ao deitar soma-se à insulina prandial/basal ainda ativa, convertendo uma hiperglicemia transitória em hipoglicemia noturna (empilhamento de correções); a conduta prioritária é revisar o bolus da refeição pós-treino e evitar empilhar correções, reservando o ajuste da basal apenas após identificar um padrão repetido.`,`A conduta correta é aumentar imediatamente e de forma permanente a dose de insulina basal, sem necessidade de analisar o padrão do sensor de glicose.`,`A hipoglicemia noturna não tem relação com o exercício físico praticado horas antes.`], correct:1,
+explanation:`O material trata exatamente desse padrão: o exercício aumenta a sensibilidade à insulina de forma aguda e tardia, e a correção agressiva ao deitar pode "somar correção à insulina ainda ativa, sem considerar seta de tendência, carboidrato planejado e exercício recente", aumentando o tempo abaixo do alvo (TBR) mesmo com HbA1c aparentemente aceitável — configurando o erro comum de "empilhar correções e transformar uma tendência em hipoglicemia tardia". A conduta recomendada prioriza reduzir/revisar o bolus da refeição pós-treino e evitar empilhar correções, revisando a basal apenas com padrões repetidos e dados suficientes — não de forma isolada e permanente sem essa análise.`},
+
+{id:46, cat:'endo', stem:`Paciente com Diabetes Mellitus tipo 2 em uso de Empagliflozina é submetido a uma cirurgia de emergência, sem possibilidade de suspender o iSGLT2 com antecedência. Dois dias após o procedimento, ainda em jejum, apresenta náuseas, dor abdominal, vômitos e taquipneia, com glicemia capilar de 180 mg/dL (não muito elevada). Qual a hipótese diagnóstica mais provável e a conduta de investigação, segundo o material?`,
+options:[`A glicemia normal exclui cetoacidose diabética; o quadro deve ser investigado como uma intercorrência cirúrgica não relacionada ao iSGLT2.`,`Cetoacidose diabética euglicêmica: a glicosúria promovida pelo iSGLT2 pode manter a glicemia relativamente controlada mesmo com deficiência relativa de insulina produzindo cetonemia e acidose; sintomas como náusea, dor abdominal, vômitos ou taquipneia em usuário de iSGLT2 devem levantar suspeita de cetonas mesmo sem hiperglicemia importante, sendo necessário checar cetonas/beta-hidroxibutirato, eletrólitos, bicarbonato e gasometria.`,`Hipoglicemia grave, devendo-se administrar glicose intravenosa imediatamente sem outra investigação.`,`Efeito adverso esperado e autolimitado do iSGLT2 no pós-operatório, não exigindo investigação laboratorial adicional.`], correct:1,
+explanation:`O material alerta explicitamente: "Glicosúria pode manter a glicemia abaixo de 250 mg/dL, enquanto a deficiência relativa de insulina produz cetonemia e acidose" — e orienta que náusea, dor abdominal, vômitos, taquipneia ou mal-estar em usuário de iSGLT2 devem levantar suspeita de cetonas "mesmo sem hiperglicemia importante". Entre os gatilhos citados estão justamente cirurgia e doença aguda. A conduta de reconhecimento envolve checar beta-hidroxibutirato/cetonas, eletrólitos, bicarbonato e gasometria, sem excluir cetoacidose apenas porque a glicemia não está muito alta — contrariando diretamente a alternativa A.`},
+
+{id:47, cat:'endo', stem:`Paciente com Diabetes Mellitus tipo 2 e insuficiência cardíaca com fração de ejeção preservada apresenta HbA1c próxima da meta terapêutica. O médico decide, ainda assim, priorizar a introdução de um inibidor de SGLT2. Qual a justificativa farmacológica dessa decisão, segundo o material?`,
+options:[`O iSGLT2 deve ser priorizado apenas quando a HbA1c está elevada, sendo desnecessário nesse paciente.`,`Os iSGLT2 promovem natriurese e efeitos hemodinâmicos que ajudam a reduzir descompensação e hospitalização por insuficiência cardíaca, com benefício cardiorrenal considerado prioritário mesmo quando a HbA1c não está "alta", justificando o uso independentemente do controle glicêmico estrito.`,`O iSGLT2 deve ser evitado em pacientes com insuficiência cardíaca, pelo risco de retenção hídrica.`,`O benefício do iSGLT2 na insuficiência cardíaca depende exclusivamente da melhora do controle glicêmico.`], correct:1,
+explanation:`O material orienta priorizar o iSGLT2 em "DM2 com insuficiência cardíaca, doença renal crônica ou risco cardiorrenal elevado — mesmo quando a HbA1c não parece alta", explicando que a natriurese e os efeitos hemodinâmicos da classe "ajudam a reduzir descompensação e hospitalização por insuficiência cardíaca", com o metabolismo produzindo queda de glicemia "sem depender de secreção de insulina". A retenção hídrica (alternativa C) é, na verdade, um problema associado à Pioglitazona, não aos iSGLT2 (que promovem natriurese, o oposto da retenção). A alternativa D contraria a orientação central de que o benefício cardiorrenal é "independente do controle glicêmico".`},
+
+{id:48, cat:'endo', stem:`Paciente com Diabetes Mellitus tipo 2 considera iniciar um agonista do receptor GLP-1, mas relata história familiar de carcinoma medular de tireoide. Segundo o material, qual cuidado de segurança deve ser observado antes de prescrever essa classe farmacológica?`,
+options:[`Os agonistas de GLP-1 devem ser evitados em história pessoal ou familiar de carcinoma medular de tireoide ou NEM2, conforme bula, além de exigir investigação de doença biliar, pancreatite prévia e gastroparesia antes do início e titulação progressiva conforme tolerância.`,`Não há qualquer restrição relacionada à tireoide para o uso de agonistas de GLP-1.`,`Os agonistas de GLP-1 devem ser sempre associados a um inibidor de DPP-4 para potencializar o efeito, independentemente do histórico familiar.`,`O histórico familiar de carcinoma medular de tireoide é indicação absoluta para uso de agonistas de GLP-1, pelo seu efeito protetor tireoidiano.`], correct:0,
+explanation:`O material orienta explicitamente: "Investigar doença biliar, pancreatite prévia e gastroparesia; evitar em história pessoal/familiar de carcinoma medular de tireoide ou NEM2 conforme bula." Além disso, recomenda começar com dose baixa e titular conforme tolerância. A alternativa C contraria outra orientação explícita do material: "Não combinar rotineiramente GLP-1 RA com inibidor de DPP-4: mecanismo sobreposto, sem benefício clínico proporcional." A alternativa D inverte completamente a orientação de segurança, que é de cautela/evitar, não de indicação.`},
+
+{id:49, cat:'endo', stem:`Paciente com Diabetes Mellitus tipo 2, obesidade significativa e necessidade de perda de peso como objetivo terapêutico central, sem doença renal ou cardíaca estabelecida. Segundo o algoritmo prático de escolha de classes no DM2 descrito no material, qual classe farmacológica deve ser considerada prioritariamente?`,
+options:[`Sulfonilureia, pela alta eficácia glicêmica inicial.`,`GLP-1 RA ou GIP/GLP-1 (ex.: Tirzepatida), considerando potência metabólica, saciedade, tolerância e manutenção do peso.`,`Pioglitazona, pelo seu efeito de perda de peso comprovado.`,`Insulina, por ser o tratamento mais eficaz para perda de peso no DM2.`], correct:1,
+explanation:`O algoritmo do material orienta que, quando "obesidade ou perda de peso é central", deve-se considerar "potência metabólica, saciedade, tolerância e manutenção do peso", apontando para "GLP-1 RA ou GIP/GLP-1" — coerente com a tabela comparativa, que mostra "peso ↓ importante" para essa classe. As sulfonilureias, pelo contrário, estão associadas a ganho de peso ("peso ↑" na tabela), assim como a Pioglitazona ("peso ↑") e a insulina ("peso ↑") — todas contrariando o objetivo de perda de peso do caso.`},
+
+{id:50, cat:'endo', stem:`Paciente com Diabetes Mellitus tipo 2 já em uso de Metformina 2.000 mg/dia. Exame de função renal mostra TFG de 25 mL/min/1,73m² (função renal significativamente reduzida). Considerando o material sobre segurança renal da Metformina, qual a conduta correta?`,
+options:[`A Metformina é contraindicada com TFG < 30 mL/min/1,73m², devendo ser suspensa ou reavaliada nessa faixa de função renal.`,`A Metformina pode ser mantida em qualquer nível de função renal, pois não tem relação com risco renal.`,`A dose de Metformina deve ser aumentada para compensar a menor absorção intestinal em pacientes com DRC avançada.`,`A Metformina deve ser trocada exclusivamente por Sulfonilureia, a única classe seguramente ajustável na DRC avançada, segundo o material.`], correct:0,
+explanation:`O material especifica: "Contraindicada se TFG <30 mL/min/1,73 m². Na faixa intermediária, reavaliar dose, função renal e condições de hipóxia, desidratação ou doença aguda." Com TFG de 25, portanto, a Metformina está contraindicada, exigindo suspensão ou reavaliação — não manutenção irrestrita (B) nem aumento de dose (C). A alternativa D não corresponde a nenhuma orientação do material, que não indica a Sulfonilureia como substituta preferencial nesse contexto; a tabela de comparação de classes, inclusive, associa Sulfonilureia a maior risco de hipoglicemia, especialmente relevante em disfunção renal.`},
+
+{id:51, cat:'endo', stem:`Homem, 72 anos, com doença arterial coronariana e infarto prévio, é diagnosticado com hipotireoidismo primário manifesto (TSH muito elevado, T4L baixo). O médico residente propõe calcular a dose de Levotiroxina exclusivamente pelo peso corporal, visando reposição plena imediata. Qual o risco dessa conduta e a estratégia correta segundo o material?`,
+options:[`O cálculo pelo peso é suficiente e seguro em qualquer paciente, independentemente da idade ou de doença cardiovascular.`,`A reposição em dose plena pode precipitar aumento do consumo miocárdico de oxigênio, angina, arritmia ou síndrome coronariana aguda; em idosos ou com doença cardiovascular, a estratégia correta é começar com dose baixa (referência de 25–50 µg/dia), aguardar o tempo farmacocinético adequado (6–8 semanas) antes de reavaliar TSH e sinais cardiovasculares, e titular em incrementos pequenos.`,`A dose deve ser calculada apenas pelo TSH inicial, sem qualquer relação com peso, idade ou doença cardiovascular.`,`Nesse paciente, deve-se iniciar diretamente com Liotironina (T3), pois tem ação mais previsível que a Levotiroxina.`], correct:1,
+explanation:`O material contrasta a reposição em adultos sem doença cardiovascular (próxima da plena, ≈1,6 µg/kg/dia) com idosos ou pacientes com doença cardiovascular, para quem recomenda "começar baixo e titular: 25–50 µg/dia", observando angina, arritmia, dispneia, tremor e perda ponderal excessiva, com reavaliação do TSH após o tempo farmacocinético adequado (geralmente 6–8 semanas) antes de qualquer novo incremento — evitando elevar abruptamente o consumo miocárdico de oxigênio. O material também explica por que não iniciar com T3 (Liotironina tem meia-vida curta e picos séricos, sem evidência de benefício rotineiro e com risco de excesso relevante), o que exclui diretamente a alternativa D.`},
+
+{id:52, cat:'endo', stem:`Paciente jovem, sem doença cardiovascular, apresenta TSH persistentemente elevado em 7 mUI/L (valor de referência até aproximadamente 4,5), com T4L normal, e relata sintomas leves e inespecíficos. Segundo o material sobre hipotireoidismo subclínico, qual a conduta mais apropriada?`,
+options:[`Iniciar Levotiroxina em dose plena imediatamente, sem necessidade de confirmação laboratorial adicional, pois qualquer TSH acima da referência já indica tratamento definitivo.`,`Como o TSH está acima da referência mas abaixo de 10 mUI/L, deve-se considerar o contexto (sintomas, anti-TPO, cirurgia/iodo prévios, desejo reprodutivo, idade); em adultos jovens sintomáticos, pode-se discutir um teste terapêutico limitado com reavaliação, mas sempre após confirmar a persistência do TSH elevado com nova medida.`,`O paciente não deve ser reavaliado, pois hipotireoidismo subclínico nunca requer conduta específica.`,`A conduta correta é solicitar exclusivamente dosagem de Liotironina (T3) para confirmação diagnóstica.`], correct:1,
+explanation:`O material orienta que "TSH elevado com T4L normal exige persistência, contexto e conversa — não uma receita automática". Para valores acima da referência mas abaixo de 10 mUI/L, os fatores que mudam o limiar de decisão incluem sintomas, anti-TPO, cirurgia/iodo prévios, desejo reprodutivo e idade, e "em adultos mais jovens sintomáticos, pode-se discutir teste terapêutico limitado e reavaliação". A etapa de "Confirmar" exige repetir TSH/T4L em intervalo apropriado antes de qualquer decisão — o que exclui o início imediato em dose plena sem confirmação (alternativa A) e a ausência total de conduta (C). A Liotironina (T3) não é a ferramenta diagnóstica recomendada nesse contexto.`},
+
+{id:53, cat:'endo', stem:`Paciente em reposição crônica com Levotiroxina, em uso de altas doses de suplemento de biotina para saúde capilar, apresenta resultado de TSH muito baixo e T4L muito alto em um exame de rotina, discordante da avaliação clínica (sem sintomas de hipertireoidismo). Qual a explicação mais provável, segundo o material?`,
+options:[`O paciente está de fato hipertireóideo e a dose de Levotiroxina deve ser reduzida imediatamente, sem investigação adicional.`,`Doses altas de biotina podem produzir TSH falsamente baixo e T4L falsamente alto em alguns ensaios laboratoriais; deve-se perguntar sobre uso de suplementos antes de interpretar o resultado e, possivelmente, repetir o exame após suspensão temporária da biotina.`,`A biotina não interfere em exames tireoidianos, sendo necessário investigar outra causa para a discordância.`,`O resultado indica hipotireoidismo central, exigindo investigação hipofisária imediata.`], correct:1,
+explanation:`O material aborda especificamente essa interferência laboratorial: "Doses altas [de biotina] podem produzir TSH falsamente baixo e T4L falsamente alto em alguns ensaios. Perguntar sobre suplementos antes de interpretar." Como o paciente está clinicamente assintomático para hipertireoidismo, a discordância sugere interferência analítica pela biotina, não hipertireoidismo verdadeiro — o que contraria a redução imediata de dose sem investigação (A) e a exclusão categórica da interferência (C). A alternativa D (hipotireoidismo central) é incompatível com o padrão bioquímico descrito (TSH baixo, T4L alto seria o oposto do esperado em hipotireoidismo).`},
+
+{id:54, cat:'endo', stem:`Paciente com doença de Graves, aguardando definição de tratamento definitivo (radioiodo ou cirurgia), apresenta tremor, palpitações e taquicardia importantes. O endocrinologista prescreve um betabloqueador para alívio sintomático enquanto a Tionamida (Metimazol) atua na síntese hormonal. Segundo o material, é correto afirmar sobre essas duas estratégias que:`,
+options:[`O betabloqueador trata a causa do hipertireoidismo, reduzindo diretamente a síntese hormonal, tornando a Tionamida desnecessária.`,`O betabloqueador reduz tremor, palpitação e hiperatividade adrenérgica, mas não reduz a síntese hormonal nem trata a causa; a Tionamida (Metimazol/tiamazol) inibe a tireoperoxidase, reduzindo a organificação e o acoplamento do iodo, sendo útil como ponte para radioiodo ou cirurgia — o paciente deve ser orientado a suspender a Tionamida e procurar hemograma imediatamente caso apresente febre ou dor de garganta, pelo risco de agranulocitose.`,`A Tionamida deve ser usada exclusivamente para alívio sintomático, sem qualquer efeito sobre a síntese hormonal.`,`Não há necessidade de orientar o paciente sobre sinais de alerta hematológico durante o uso de Tionamida, pois a agranulocitose é um evento inexistente com esse fármaco.`], correct:1,
+explanation:`O material separa claramente "controle dos sintomas" (Betabloqueador — "reduz tremor, palpitação e hiperatividade adrenérgica... não reduz a síntese hormonal nem trata a causa") de "controle da síntese" (Tionamida — Metimazol/tiamazol inibe a tireoperoxidase, reduzindo organificação e acoplamento do iodo, útil em Graves e como ponte para radioiodo/cirurgia). Também orienta explicitamente: "orientar febre/dor de garganta → suspender e solicitar hemograma; hepatotoxicidade também exige vigilância", e alerta que "agranulocitose é rara, mas potencialmente grave. Não banalizar dor de garganta ou febre durante tionamida." Essas informações contrariam diretamente as alternativas A, C e D.`},
+
+{id:55, cat:'endo', stem:`Paciente com insuficiência adrenal primária conhecida (doença de Addison) é trazido ao pronto-socorro com vômitos, hipotensão importante (PA 80/50 mmHg) e hiponatremia. Antes mesmo dos resultados laboratoriais confirmatórios, qual deve ser a conduta imediata, segundo o material?`,
+options:[`Aguardar a dosagem de cortisol sérico antes de iniciar qualquer tratamento, para confirmar a crise adrenal com certeza diagnóstica.`,`Hidrocortisona parenteral (100 mg IV/IM imediatamente) e reposição volêmica com soro fisiológico, corrigindo hipoglicemia e distúrbios eletrolíticos conforme gravidade; buscar e tratar o gatilho (infecção, trauma, cirurgia, vômitos, suspensão de corticoide); os exames podem ser coletados, mas sem atrasar a terapia.`,`Fludrocortisona por via oral, isoladamente, é suficiente para reverter a crise adrenal aguda.`,`Iniciar Levotiroxina em dose plena, pois a crise adrenal decorre de hipotireoidismo grave associado.`], correct:1,
+explanation:`O material é categórico: "A conduta não espera o laboratório" na crise adrenal — hipotensão, vômitos, hipoglicemia, hiponatremia ou hipercalemia em pessoa com insuficiência adrenal exigem tratamento imediato: "Hidrocortisona parenteral e reposição volêmica. Coletar exames se isso não atrasar a terapia." O protocolo específico inclui Hidrocortisona 100 mg IV/IM imediatamente, volume e correção de glicose/eletrólitos, e busca ativa do gatilho. A Endocrine Society, citada no material, reforça: "tratar imediatamente quando houver suspeita clínica; não atrasar glicocorticoide por testes diagnósticos" — contrariando diretamente a alternativa A. A Fludrocortisona oral isolada (C) não substitui a hidrocortisona parenteral em emergência, e a crise adrenal não decorre de hipotireoidismo (D).`},
+
+{id:56, cat:'endo', stem:`Paciente com insuficiência adrenal primária em reposição crônica com Hidrocortisona e Fludrocortisona desenvolve quadro febril por infecção respiratória. Ele pergunta ao médico se deve ajustar suas medicações durante o período de doença. Segundo as "sick-day rules" descritas no material, qual a orientação correta?`,
+options:[`Durante episódios de febre/infecção, deve-se aumentar temporariamente a dose oral de Hidrocortisona conforme plano escrito previamente orientado; em caso de vômitos ou diarreia, a absorção oral pode falhar, sendo necessário usar reposição parenteral de resgate e procurar atendimento de emergência.`,`As doses de Hidrocortisona e Fludrocortisona devem ser mantidas exatamente iguais, independentemente de doença intercorrente.`,`Durante doença aguda, deve-se suspender temporariamente a Hidrocortisona para evitar excesso de corticoide.`,`Apenas a Fludrocortisona deve ser ajustada durante doença aguda; a Hidrocortisona nunca deve ser alterada.`], correct:0,
+explanation:`O material descreve exatamente essas "sick-day rules": "Febre/infecção: aumentar temporariamente a dose oral conforme plano escrito." e "Vômitos/diarreia: absorção oral falha → usar resgate parenteral e procurar emergência." Além disso, reforça o princípio de segurança de que a reposição "nunca deve ser suspensa abruptamente" em quem depende dela sem plano supervisionado — o que exclui diretamente a suspensão da Hidrocortisona durante doença aguda (alternativa C). Manter doses fixas independentemente do contexto clínico (B) ou ajustar apenas a Fludrocortisona (D) também contrariam a orientação específica do material, que enfatiza justamente o ajuste temporário da Hidrocortisona conforme a gravidade da intercorrência.`}
+
+];
+// ================= HELPERS =================
+const TOTAL = QUESTIONS.length;
+const LETTERS = ['A','B','C','D'];
+
+function catMeta(catId){ return CATEGORIES.find(c => c.id === catId); }
+function questionsFor(catId){
+  if(catId === 'all') return QUESTIONS;
+  return QUESTIONS.filter(q => q.cat === catId);
+}
+function byId(id){ return QUESTIONS.find(q => q.id === id); }
+
+function safeGet(key){
+  try{ const raw = localStorage.getItem(key); return raw ? JSON.parse(raw) : null; }catch(e){ return null; }
+}
+function safeSet(key, val){
+  try{ localStorage.setItem(key, JSON.stringify(val)); }catch(e){}
+}
+function safeGetStr(key){
+  try{ return localStorage.getItem(key) || ''; }catch(e){ return ''; }
+}
+function safeSetStr(key, val){
+  try{ localStorage.setItem(key, val); }catch(e){}
+}
+
+const EXAM_KEY = 'farmaco_exam_v1';
+const PRACTICE_KEY = 'farmaco_practice_v1';
+const THEME_KEY = 'farmaco_theme_v1';
+
+// ================= STATE =================
+let screen = 'menu'; // menu | exam | exam-result | exam-gabarito | practice-menu | practice-quiz | practice-summary | practice-review
+let exam = safeGet(EXAM_KEY); // {order:[ids], answers:{id:idx}, pos, finished}
+let practiceAnswers = safeGet(PRACTICE_KEY) || {}; // {id:{selected,correct}}
+let practiceCat = 'all';
+let practiceQueue = [];
+let practicePos = 0;
+
+const content = document.getElementById('content');
+
+// ================= EXAM MODE =================
+function startExam(shuffle){
+  let order = QUESTIONS.map(q => q.id);
+  if(shuffle){
+    for(let i = order.length - 1; i > 0; i--){
+      const j = Math.floor(Math.random() * (i + 1));
+      [order[i], order[j]] = [order[j], order[i]];
+    }
+  }
+  exam = {order, answers:{}, pos:0, finished:false};
+  safeSet(EXAM_KEY, exam);
+  screen = 'exam';
+  render();
+}
+
+function examScore(){
+  let correct = 0;
+  const byCat = {};
+  CATEGORIES.forEach(c => byCat[c.id] = {correct:0, total:0});
+  exam.order.forEach(id => {
+    const q = byId(id);
+    if(!byCat[q.cat]) byCat[q.cat] = {correct:0, total:0};
+    byCat[q.cat].total++;
+    const a = exam.answers[id];
+    if(a && a.correct){ correct++; byCat[q.cat].correct++; }
+  });
+  return {correct, total: exam.order.length, byCat, answered: Object.keys(exam.answers).length};
+}
+
+function renderExam(){
+  const qId = exam.order[exam.pos];
+  const q = byId(qId);
+  const cat = catMeta(q.cat);
+  const saved = exam.answers[qId];
+  const locked = !!saved;
+  const answeredCount = Object.keys(exam.answers).length;
+
+  let dotsHtml = '';
+  exam.order.forEach((id, i) => {
+    const qq = byId(id);
+    const isAns = !!exam.answers[id];
+    const isCur = i === exam.pos;
+    dotsHtml += `<button class="jump-dot${isAns ? ' answered' : ''}${isCur ? ' current' : ''}" data-pos="${i}" style="--dot-color:${catMeta(qq.cat).color}" title="Questão ${i+1} · ${catMeta(qq.cat).short}">${i+1}</button>`;
+  });
+
+  let optsHtml = '';
+  q.options.forEach((opt, idx) => {
+    let cls = 'opt';
+    if(locked){
+      cls += ' locked';
+      if(idx === q.correct) cls += ' correct';
+      else if(idx === saved.selected) cls += ' incorrect';
+      else cls += ' dimmed';
+    }
+    optsHtml += `<button class="${cls}" data-idx="${idx}">
+      <span class="opt-letter">${LETTERS[idx]}</span>
+      <span>${opt}</span>
+    </button>`;
+  });
+
+  let explainHtml = '';
+  if(locked){
+    explainHtml = `<div class="explain">
+      <div class="verdict ${saved.correct ? 'ok' : 'no'}">${saved.correct ? 'Correto.' : 'Não é essa.'}</div>
+      <p>${q.explanation}</p>
+    </div>`;
+  }
+
+  const isLast = exam.pos === exam.order.length - 1;
+
+  content.innerHTML = `
+    <div class="quiz-head">
+      <div class="quiz-crumb"><span class="cat-tag" style="color:${cat.color}">${cat.short}</span> · Questão ${exam.pos+1} de ${exam.order.length}</div>
+      <div class="quiz-score">${answeredCount}/${exam.order.length} respondidas</div>
+    </div>
+    <div class="progress-track"><div class="progress-fill" style="width:${Math.round((exam.pos)/exam.order.length*100)}%; background:${cat.color};"></div></div>
+    <div class="jump-grid">${dotsHtml}</div>
+    <div class="q-card" style="--cat-color:${cat.color}">
+      <div class="q-num">Questão ${exam.pos+1}</div>
+      <p class="q-stem">${q.stem}</p>
+      <div class="opt-list" id="optList">${optsHtml}</div>
+      ${explainHtml}
+    </div>
+    <div class="exam-nav">
+      <button class="ghost-btn nav-btn" id="prevBtn" ${exam.pos === 0 ? 'disabled' : ''}>← Anterior</button>
+      ${locked
+        ? (isLast
+            ? `<button class="primary-btn" id="finishBtn" style="--cat-color:${cat.color}">Ver resultado</button>`
+            : `<button class="primary-btn" id="nextBtn" style="--cat-color:${cat.color}">Próxima →</button>`)
+        : `<span></span>`}
+    </div>
+  `;
+
+  if(!locked){
+    document.querySelectorAll('#optList .opt').forEach(btn => {
+      btn.addEventListener('click', () => {
+        const idx = parseInt(btn.getAttribute('data-idx'), 10);
+        exam.answers[qId] = { selected: idx, correct: idx === q.correct };
+        safeSet(EXAM_KEY, exam);
+        renderExam();
+      });
+    });
+  }
+  document.querySelectorAll('.jump-dot').forEach(btn => {
+    btn.addEventListener('click', () => {
+      exam.pos = parseInt(btn.getAttribute('data-pos'), 10);
+      safeSet(EXAM_KEY, exam);
+      renderExam();
+    });
+  });
+  const prevBtn = document.getElementById('prevBtn');
+  if(prevBtn) prevBtn.addEventListener('click', () => { exam.pos--; safeSet(EXAM_KEY, exam); renderExam(); });
+  const nextBtn = document.getElementById('nextBtn');
+  if(nextBtn) nextBtn.addEventListener('click', () => { exam.pos++; safeSet(EXAM_KEY, exam); renderExam(); });
+  const finishBtn = document.getElementById('finishBtn');
+  if(finishBtn) finishBtn.addEventListener('click', () => {
+    exam.finished = true;
+    safeSet(EXAM_KEY, exam);
+    screen = 'exam-result';
+    render();
+  });
+}
+
+function renderExamResult(){
+  const s = examScore();
+  const pct = s.total ? Math.round(s.correct / s.total * 100) : 0;
+  const blanks = s.total - s.answered;
+
+  let breakdownHtml = '';
+  CATEGORIES.forEach(cat => {
+    const b = s.byCat[cat.id];
+    if(!b || b.total === 0) return;
+    const bp = Math.round(b.correct / b.total * 100);
+    breakdownHtml += `<div class="breakdown-item" style="border-top:3px solid ${cat.color}">
+      <div class="b-label">${cat.short}</div>
+      <div class="b-score">${b.correct}/${b.total} <span style="font-weight:600;font-size:13px;color:var(--text-faint);">(${bp}%)</span></div>
+      <div class="b-bar"><div class="b-bar-fill" style="width:${bp}%; background:${cat.color};"></div></div>
+    </div>`;
+  });
+
+  content.innerHTML = `
+    <div class="summary-card">
+      <p class="summary-label">Resultado da prova</p>
+      <div class="summary-score">${pct}<span>%</span></div>
+      <p class="summary-label">${s.correct} de ${s.total} questões corretas${blanks > 0 ? ` · ${blanks} não respondida(s)` : ''}</p>
+      <div class="summary-breakdown">${breakdownHtml}</div>
+      <div class="summary-actions">
+        <button class="primary-btn" id="gabaritoBtn" style="--cat-color:var(--cyan)">Ver gabarito completo</button>
+        <button class="ghost-btn" id="redoExamBtn">Refazer a prova</button>
+        <button class="ghost-btn" id="menuBtn">Voltar ao início</button>
+      </div>
+    </div>
+  `;
+  document.getElementById('gabaritoBtn').onclick = () => { screen = 'exam-gabarito'; render(); };
+  document.getElementById('redoExamBtn').onclick = () => startExam(false);
+  document.getElementById('menuBtn').onclick = () => { screen = 'menu'; render(); };
+}
+
+function renderExamGabarito(){
+  let html = `<button class="back-link" id="backToResult">← Voltar ao resultado</button>
+    <div class="menu-hero" style="padding-top:0;">
+      <p class="eyebrow">Gabarito comentado</p>
+      <h2 style="font-size:25px;">As 56 questões, com sua resposta e a justificativa</h2>
+    </div>`;
+
+  exam.order.forEach((id, i) => {
+    const q = byId(id);
+    const cat = catMeta(q.cat);
+    const a = exam.answers[id];
+    const isBlank = !a;
+    html += `<div class="review-item" style="--cat-color:${cat.color}">
+      <div class="r-tag">Questão ${i+1} · ${cat.short}</div>
+      <div class="r-stem">${q.stem}</div>
+      ${isBlank
+        ? `<div class="r-your blank">Você deixou em branco</div><div class="r-your ok">Correta: ${LETTERS[q.correct]}) ${q.options[q.correct]}</div>`
+        : `<div class="r-your ${a.correct ? 'ok' : 'no'}">${a.correct ? '✓ Você acertou' : '✗ Você marcou'}: ${LETTERS[a.selected]}) ${q.options[a.selected]}</div>
+           ${!a.correct ? `<div class="r-your ok">Correta: ${LETTERS[q.correct]}) ${q.options[q.correct]}</div>` : ''}`}
+      <div class="r-exp">${q.explanation}</div>
+    </div>`;
+  });
+  content.innerHTML = html;
+  document.getElementById('backToResult').onclick = () => { screen = 'exam-result'; render(); };
+}
+
+// ================= PRACTICE MODE (por assunto, com feedback imediato) =================
+function practiceScoreFor(catId){
+  const qs = questionsFor(catId);
+  let answered = 0, correct = 0;
+  qs.forEach(q => { const a = practiceAnswers[q.id]; if(a){ answered++; if(a.correct) correct++; } });
+  return {answered, correct, total: qs.length};
+}
+
+function startPractice(catId, shuffle){
+  practiceCat = catId;
+  let qs = questionsFor(catId).slice();
+  if(shuffle){
+    for(let i = qs.length - 1; i > 0; i--){
+      const j = Math.floor(Math.random() * (i + 1));
+      [qs[i], qs[j]] = [qs[j], qs[i]];
+    }
+  }
+  practiceQueue = qs;
+  practicePos = 0;
+  screen = 'practice-quiz';
+  render();
+}
+
+const PRACTICE_DESCS = {
+  farmaco: 'Potência, eficácia, agonistas/antagonistas, receptores, CYP450, ligação proteica, volume de distribuição e clearance.',
+  cardio: 'IECA/BRA/ARNI, betabloqueadores, diuréticos, estatinas, antitrombóticos, antiarrítmicos e algoritmos de HAS/IC/SCA.',
+  psico: 'Vias dopaminérgicas, antipsicóticos, EPS, antidepressivos, estabilizadores de humor, ansiolíticos e emergências psiquiátricas.',
+  endo: 'Insulinoterapia, classes no DM2, cetoacidose euglicêmica, tireoide (reposição e hipertireoidismo) e insuficiência adrenal.'
+};
+
+function renderPracticeMenu(){
+  let html = `<button class="back-link" id="backToMenu">← Voltar ao início</button>
+    <div class="menu-hero" style="padding-top:0;">
+      <p class="eyebrow">Praticar por assunto</p>
+      <h2 style="font-size:26px;">Escolha um módulo</h2>
+      <p>Aqui cada questão mostra a resposta certa e a explicação assim que você escolhe uma alternativa — ideal para estudar um assunto de cada vez.</p>
+    </div>
+    <div class="start-grid" id="startGrid"></div>
+    <div class="options-row"><label class="toggle-field"><input type="checkbox" id="shuffleToggle"> Embaralhar ordem das questões</label></div>`;
+  content.innerHTML = html;
+  document.getElementById('backToMenu').onclick = () => { screen = 'menu'; render(); };
+
+  const grid = document.getElementById('startGrid');
+  function makeCard(id, label, desc, color, count, sc){
+    const card = document.createElement('button');
+    card.className = 'start-card';
+    card.style.setProperty('--card-color', color);
+    card.innerHTML = `<h4>${label}</h4><p>${desc}</p>
+      <div class="count">${count} questões</div>
+      <div class="prog">${sc.answered ? sc.correct + '/' + sc.answered + ' corretas até agora' : 'ainda não iniciado'}</div>`;
+    card.onclick = () => startPractice(id, document.getElementById('shuffleToggle').checked);
+    return card;
+  }
+  CATEGORIES.forEach(cat => grid.appendChild(makeCard(cat.id, cat.short, PRACTICE_DESCS[cat.id], cat.color, questionsFor(cat.id).length, practiceScoreFor(cat.id))));
+  grid.appendChild(makeCard('all', 'Todas as questões', 'Os quatro módulos misturados, com feedback a cada questão.', 'var(--text)', TOTAL, practiceScoreFor('all')));
+}
+
+function renderPracticeQuiz(){
+  if(practicePos >= practiceQueue.length){ screen = 'practice-summary'; render(); return; }
+  const q = practiceQueue[practicePos];
+  const cat = catMeta(q.cat);
+  const saved = practiceAnswers[q.id];
+  const locked = !!saved;
+
+  let optsHtml = '';
+  q.options.forEach((opt, idx) => {
+    let cls = 'opt';
+    if(locked){
+      cls += ' locked';
+      if(idx === q.correct) cls += ' correct';
+      else if(idx === saved.selected) cls += ' incorrect';
+      else cls += ' dimmed';
+    }
+    optsHtml += `<button class="${cls}" data-idx="${idx}"><span class="opt-letter">${LETTERS[idx]}</span><span>${opt}</span></button>`;
+  });
+
+  let explainHtml = '';
+  if(locked){
+    explainHtml = `<div class="explain">
+      <div class="verdict ${saved.correct ? 'ok' : 'no'}">${saved.correct ? 'Correto.' : 'Não é essa.'}</div>
+      <p>${q.explanation}</p>
+    </div>`;
+  }
+
+  const runAnswered = practiceQueue.filter(qq => practiceAnswers[qq.id]).length;
+  const runCorrect = practiceQueue.filter(qq => practiceAnswers[qq.id] && practiceAnswers[qq.id].correct).length;
+
+  content.innerHTML = `
+    <button class="back-link" id="backToPracticeMenu">← Módulos</button>
+    <div class="quiz-head">
+      <div class="quiz-crumb"><span class="cat-tag" style="color:${cat.color}">${cat.short}</span> · Questão ${practicePos+1} de ${practiceQueue.length}</div>
+      <div class="quiz-score">${runCorrect}/${runAnswered || 0} corretas</div>
+    </div>
+    <div class="progress-track"><div class="progress-fill" style="width:${Math.round((practicePos)/practiceQueue.length*100)}%; background:${cat.color};"></div></div>
+    <div class="q-card" style="--cat-color:${cat.color}">
+      <div class="q-num">Questão ${practicePos+1}</div>
+      <p class="q-stem">${q.stem}</p>
+      <div class="opt-list" id="optList">${optsHtml}</div>
+      ${explainHtml}
+      <div class="q-actions">${locked ? `<button class="primary-btn" id="nextBtn" style="--cat-color:${cat.color}">${practicePos+1 < practiceQueue.length ? 'Próxima questão' : 'Ver resultado'}</button>` : ''}</div>
+    </div>
+  `;
+  document.getElementById('backToPracticeMenu').onclick = () => { screen = 'practice-menu'; render(); };
+
+  if(!locked){
+    document.querySelectorAll('#optList .opt').forEach(btn => {
+      btn.addEventListener('click', () => {
+        const idx = parseInt(btn.getAttribute('data-idx'), 10);
+        practiceAnswers[q.id] = { selected: idx, correct: idx === q.correct };
+        safeSet(PRACTICE_KEY, practiceAnswers);
+        renderPracticeQuiz();
+      });
+    });
+  }
+  const nextBtn = document.getElementById('nextBtn');
+  if(nextBtn) nextBtn.addEventListener('click', () => { practicePos++; render(); });
+}
+
+function renderPracticeSummary(){
+  const total = practiceQueue.length;
+  let correct = 0;
+  practiceQueue.forEach(q => { if(practiceAnswers[q.id] && practiceAnswers[q.id].correct) correct++; });
+  const pct = total ? Math.round(correct/total*100) : 0;
+
+  content.innerHTML = `
+    <div class="summary-card">
+      <p class="summary-label">Módulo concluído</p>
+      <div class="summary-score">${pct}<span>%</span></div>
+      <p class="summary-label">${correct} de ${total} questões corretas</p>
+      <div class="summary-actions">
+        <button class="primary-btn" id="redoBtn" style="--cat-color:var(--cyan)">Refazer este módulo</button>
+        <button class="ghost-btn" id="chooseBtn">Escolher outro módulo</button>
+        <button class="ghost-btn" id="menuBtn2">Voltar ao início</button>
+      </div>
+    </div>
+  `;
+  document.getElementById('redoBtn').onclick = () => startPractice(practiceCat, false);
+  document.getElementById('chooseBtn').onclick = () => { screen = 'practice-menu'; render(); };
+  document.getElementById('menuBtn2').onclick = () => { screen = 'menu'; render(); };
+}
+
+// ================= MENU =================
+function renderMenu(){
+  const hasExamInProgress = exam && !exam.finished && Object.keys(exam.answers || {}).length > 0;
+  const hasFinishedExam = exam && exam.finished;
+
+  content.innerHTML = `
+    <div class="menu-hero">
+      <p class="eyebrow">Revisão baseada 100% no material de aula</p>
+      <h2>56 questões para testar seu raciocínio farmacológico</h2>
+      <p>Casos clínicos inéditos cobrindo Farmacologia Geral, Cardiovascular, Psicofarmacologia e Endocrinologia. Responda todas em sequência e, ao final, veja seu percentual de acerto geral e por assunto.</p>
+      <div class="cta-row">
+        <button class="cta-primary" id="startExamBtn">${hasFinishedExam ? 'Refazer as 56 questões' : hasExamInProgress ? 'Continuar a prova' : 'Iniciar as 56 questões'}</button>
+        <label class="cta-meta"><input type="checkbox" id="examShuffle" style="accent-color:var(--cyan); margin-right:6px;">ordem aleatória</label>
+      </div>
+      ${hasFinishedExam ? `<div class="resume-note"><span>Você já concluiu esta prova.</span><button class="ghost-btn" id="viewLastResult">Ver resultado</button></div>` : ''}
+      <div class="fidelity"><strong>Fidelidade à fonte:</strong> todo o conteúdo cobrado (mecanismos de ação, indicações, efeitos adversos, interações e condutas) vem exclusivamente das aulas fornecidas. Nenhuma dose, protocolo ou informação externa foi adicionada.</div>
+    </div>
+    <div class="practice-section">
+      <h3>Prefere ir por assunto?</h3>
+      <p>Pratique um módulo de cada vez, com a resposta certa revelada a cada questão.</p>
+      <button class="ghost-btn" id="goPracticeBtn">Praticar por assunto →</button>
+    </div>
+  `;
+
+  document.getElementById('startExamBtn').addEventListener('click', () => {
+    if(hasExamInProgress){ screen = 'exam'; render(); return; }
+    startExam(document.getElementById('examShuffle').checked);
+  });
+  const viewLast = document.getElementById('viewLastResult');
+  if(viewLast) viewLast.addEventListener('click', () => { screen = 'exam-result'; render(); });
+  document.getElementById('goPracticeBtn').addEventListener('click', () => { screen = 'practice-menu'; render(); });
+}
+
+// ================= ROUTER =================
+function render(){
+  if(screen === 'menu') renderMenu();
+  else if(screen === 'exam') renderExam();
+  else if(screen === 'exam-result') renderExamResult();
+  else if(screen === 'exam-gabarito') renderExamGabarito();
+  else if(screen === 'practice-menu') renderPracticeMenu();
+  else if(screen === 'practice-quiz') renderPracticeQuiz();
+  else if(screen === 'practice-summary') renderPracticeSummary();
+  window.scrollTo(0, 0);
+}
+
+// ================= TOP BAR =================
+// Native confirm()/alert() dialogs don't run inside the sandboxed artifact frame,
+// so resetting uses a simple in-page two-step confirmation instead.
+const resetBtn = document.getElementById('resetBtn');
+let resetArmed = false;
+let resetTimer = null;
+
+function armReset(){
+  resetArmed = true;
+  resetBtn.textContent = 'Clique de novo para confirmar';
+  resetBtn.classList.add('danger');
+  clearTimeout(resetTimer);
+  resetTimer = setTimeout(disarmReset, 4000);
+}
+function disarmReset(){
+  resetArmed = false;
+  resetBtn.textContent = 'Zerar tudo';
+  resetBtn.classList.remove('danger');
+  clearTimeout(resetTimer);
+}
+function doReset(){
+  exam = null; practiceAnswers = {};
+  safeSet(EXAM_KEY, null); safeSet(PRACTICE_KEY, {});
+  disarmReset();
+  screen = 'menu';
+  render();
+}
+resetBtn.addEventListener('click', () => {
+  if(resetArmed) doReset();
+  else armReset();
+});
+
+const themeBtn = document.getElementById('themeToggle');
+function applyTheme(t){
+  if(t === 'dark') document.documentElement.setAttribute('data-theme','dark');
+  else if(t === 'light') document.documentElement.setAttribute('data-theme','light');
+  else document.documentElement.removeAttribute('data-theme');
+}
+let currentTheme = safeGetStr(THEME_KEY);
+applyTheme(currentTheme);
+themeBtn.addEventListener('click', () => {
+  const order = ['', 'dark', 'light'];
+  const idx = order.indexOf(currentTheme);
+  currentTheme = order[(idx + 1) % order.length];
+  safeSetStr(THEME_KEY, currentTheme);
+  applyTheme(currentTheme);
+});
+
+// ================= INIT =================
+if(exam && exam.finished){ screen = 'menu'; }
+render();
+
+})();
+</script>
+</body>
+</html>
